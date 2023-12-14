@@ -1,0 +1,7 @@
+.menu_icon {
+  @apply opacity-40 p-3 hover:bg-gray-300 hover:opacity-100 hover:rounded-xl transition-all duration-200 ease-in;
+}
+
+.menu_icon_active {
+  @apply p-3 bg-gray-300 rounded-xl transition-all duration-200 ease-in;
+}

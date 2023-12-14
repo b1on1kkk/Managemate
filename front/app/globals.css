@@ -7,3 +7,7 @@
 * {
   font-family: "Rethink Sans", sans-serif;
 }
+
+body {
+  height: 100vh;
+}
