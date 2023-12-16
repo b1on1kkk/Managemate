@@ -1,7 +1,9 @@
 import "./globals.css";
 
-import LeftSideBlockLayout from "./(LeftSideBlock)/layout";
 import Header from "./components/Header/Header";
+import ReduxProvider from "./redux/provider";
+
+import LeftsideNavbar from "./components/LeftsideNavbar/LeftsideNavbar";
 
 export default function RootLayout({
   children
@@ -11,17 +13,17 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body>
-        <LeftSideBlockLayout>
-          <main className="pl-25 flex h-full">
-            <aside className="h-full w-80 flex flex-col border-r-1 bg-white">
-              Projects
-            </aside>
-            <main className="flex flex-col flex-1">
+        <ReduxProvider>
+          <LeftsideNavbar />
+          <main className="pl-16 flex h-full z-10 relative">
+            <div className="flex flex-col flex-1">
               <Header />
-              <main className="flex-1 overflow-auto">{children}</main>
-            </main>
+              <div className="flex-1 overflow-auto bg-gray-100 flex">
+                {children}
+              </div>
+            </div>
           </main>
-        </LeftSideBlockLayout>
+        </ReduxProvider>
       </body>
     </html>
   );

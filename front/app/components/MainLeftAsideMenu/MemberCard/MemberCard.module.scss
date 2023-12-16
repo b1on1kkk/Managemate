@@ -1,0 +1,7 @@
+.member_card {
+  @apply flex gap-4 mb-3 p-2 flex-col border-1 rounded-lg h-14 overflow-hidden transition-all duration-200;
+}
+
+.member_card_expanded {
+  @apply h-40;
+}

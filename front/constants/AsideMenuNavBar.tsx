@@ -22,37 +22,37 @@ export const ASIDE_MENU_NAVBAR: T_ASIDE_MENU_NAVBAR[] = [
     icon: <LayoutDashboard color="black" />
   },
   {
-    path: "/Projects",
+    path: "/projects",
     name: "Projects",
     icon: <Waypoints color="black" />
   },
   {
-    path: "/Timer",
+    path: "/timer",
     name: "Timer",
     icon: <Timer color="black" />
   },
   {
-    path: "/Calendar",
+    path: "/calendar",
     name: "Calendar",
     icon: <CalendarDays color="black" />
   },
   {
-    path: "/Statistics",
+    path: "/statistics",
     name: "Statistics",
     icon: <LineChart color="black" />
   },
   {
-    path: "/Chat",
+    path: "/chat",
     name: "Chat",
     icon: <MessageSquare color="black" />
   },
   {
-    path: "/Help",
+    path: "/help",
     name: "Help",
     icon: <HelpCircle color="black" />
   },
   {
-    path: "/Log_out",
+    path: "/log_out",
     name: "Log out",
     icon: <LogOut color="black" />
   }

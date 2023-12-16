@@ -1,5 +1,7 @@
 import Icon from "../Icon/Icon";
 
+import Link from "next/link";
+
 export default function Header() {
   return (
     <header className="h-24 border-b-1 px-9 py-6 flex">
@@ -24,6 +26,12 @@ export default function Header() {
         </div>
         <div className="w-10 h-10 bg-gray-500 rounded-full"></div>
         <div>Username</div>
+      </div>
+
+      <div>
+        <Link href={"/registration"}>
+          <button>Sign up!</button>
+        </Link>
       </div>
     </header>
   );

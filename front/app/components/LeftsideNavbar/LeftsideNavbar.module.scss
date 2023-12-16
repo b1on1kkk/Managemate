@@ -1,7 +1,15 @@
-.menu_icon {
-  @apply opacity-40 p-3 hover:bg-gray-300 hover:opacity-100 hover:rounded-xl transition-all duration-200 ease-in;
+.aside_menu {
+  @apply w-16 fixed left-0 top-0 h-full flex flex-col overflow-hidden border-r-1 p-2 gap-8 z-50 transition-all duration-200 bg-white;
 }
 
-.menu_icon_active {
-  @apply p-3 bg-gray-300 rounded-xl transition-all duration-200 ease-in;
+.menu_expanded {
+  @apply w-44 transition-all duration-200 shadow-[0px_0px_15px_rgba(0,0,0,0.2)];
+}
+
+.menu_link {
+  @apply flex items-center gap-5 p-3 opacity-60 hover:bg-gray-200 hover:opacity-100 rounded-lg transition-all duration-200 ease-in;
+}
+
+.menu_link_active {
+  @apply bg-gray-200 opacity-100 rounded-lg;
 }
