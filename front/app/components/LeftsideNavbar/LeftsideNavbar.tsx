@@ -18,6 +18,7 @@ import { ASIDE_MENU_NAVBAR } from "../../../constants/AsideMenuNavBar";
 import { useDispatch } from "react-redux";
 import { AppDispatch } from "@/app/redux/store";
 import { getUser } from "@/app/redux/features/user.slice";
+import { setProject } from "@/app/redux/features/service.slice";
 //
 
 export default function LeftsideNavbar() {
@@ -53,6 +54,7 @@ export default function LeftsideNavbar() {
                     ? styles.menu_link_active
                     : ""
                 }`}
+                onClick={() => dispatch(setProject(null))}
               >
                 <span>{item.icon}</span>
                 <span>{item.name}</span>

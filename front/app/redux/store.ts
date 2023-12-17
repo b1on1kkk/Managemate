@@ -2,11 +2,18 @@ import { configureStore } from "@reduxjs/toolkit";
 
 import { Projects } from "./features/projects.slice";
 import { User } from "./features/user.slice";
+import { Users } from "./features/get_all_users.slice";
+import { Service } from "./features/service.slice";
+
+import { Members } from "./features/get_members.slice";
 
 export const store = configureStore({
   reducer: {
     project_reducer: Projects.reducer,
-    user: User.reducer
+    user: User.reducer,
+    get_all_users: Users.reducer,
+    members: Members.reducer,
+    service: Service.reducer
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware({

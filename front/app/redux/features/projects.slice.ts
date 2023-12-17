@@ -1,11 +1,6 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import axios, { AxiosError } from "axios";
 
-export interface Todo {
-  key1: string;
-  key2: string;
-}
-
 export interface Project {
   id: number;
   user_id: number;
@@ -20,6 +15,7 @@ export interface Project {
 interface Projects {
   projects: Project[];
   error: AxiosError | null;
+  pending: string;
 }
 
 export const getProjects = createAsyncThunk(
@@ -39,7 +35,8 @@ export const getProjects = createAsyncThunk(
 
 const initialState: Projects = {
   projects: [],
-  error: null
+  error: null,
+  pending: "pending"
 };
 
 export const Projects = createSlice({
@@ -50,6 +47,10 @@ export const Projects = createSlice({
     builder
       .addCase(getProjects.fulfilled, (state, action) => {
         state.projects = action.payload.data;
+        state.pending = action.meta.requestStatus;
+      })
+      .addCase(getProjects.pending, (state, action) => {
+        state.pending = action.meta.requestStatus;
       })
       .addCase(getProjects.rejected, (state, action) => {
         state.error = action.error as AxiosError;

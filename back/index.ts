@@ -119,29 +119,39 @@ app.get("/user", (req: Request, res: Response) => {
   );
 });
 
+app.get("/users", (_, res: Response) => {
+  db.query("SELECT id, name, mail FROM users", (error: Error, result: any) => {
+    if (error) return res.status(500).send(error);
+    return res.status(200).json(result);
+  });
+});
+
 app.get("/projects", (req: Request, res: Response) => {
   const { user_id } = req.query;
 
+  // getting all projects that connects to person.
   db.query(
-    "SELECT project_id FROM users_projects WHERE user_id = ?",
+    "SELECT * FROM projects JOIN users_projects ON projects.id = users_projects.project_id WHERE users_projects.user_id = ?",
     [user_id],
-    (error: Error, project_id: any) => {
-      if (error) return res.status(500).send("Error, something goes wrong!");
+    (error: Error, projects: any) => {
+      if (error) return console.log(error);
 
-      const buff_indexes: number[] = [];
+      return res.status(200).json(projects);
+    }
+  );
+});
 
-      JSON.parse(JSON.stringify(project_id)).forEach((idx: any) => {
-        buff_indexes.push(idx.project_id);
-      });
+app.get("/members", (req: Request, res: Response) => {
+  const { user_id } = req.query;
 
-      db.query(
-        `SELECT * FROM projects WHERE id IN (${buff_indexes.join(",")})`,
-        (error: Error, projects: any) => {
-          if (error) return console.log(error);
+  // getting all users that connects to project.
+  db.query(
+    "SELECT id, name, mail FROM users JOIN users_projects ON users.id = users_projects.user_id WHERE users_projects.project_id = ?",
+    [user_id],
+    (error: Error, projects: any) => {
+      if (error) return console.log(error);
 
-          return res.status(200).json(projects);
-        }
-      );
+      return res.status(200).json(projects);
     }
   );
 });
@@ -160,21 +170,49 @@ app.post("/new_project", (req: Request, res: Response) => {
   db.query("INSERT INTO projects SET ?", [buff_obj], (error: Error) => {
     if (error) return res.status(500).send("Error, something goes wrong!");
 
-    db.query("SELECT * FROM projects", (error: Error, projects: any) => {
-      if (error) return res.status(500).send("Error, something goes wrong!");
+    db.query(
+      "SELECT * FROM projects ORDER BY id DESC LIMIT 1",
+      (error: Error, project: any) => {
+        if (error) return res.status(500).send("Error, something goes wrong!");
 
-      const addedProject = projects[projects.length - 1].id;
-      const user_id = req.body.user_added_id;
+        const user_id = req.body.user_added_id;
+        const query = `INSERT INTO users_projects (user_id, project_id) VALUES (${user_id}, ${project[0].id})`;
 
-      const query = `INSERT INTO users_projects (user_id, project_id) VALUES (${user_id}, ${addedProject})`;
-
-      db.query(query, (error: Error) => {
-        if (error) console.log(error);
-      });
-    });
+        db.query(query, (error: Error) => {
+          if (error)
+            return res.status(500).send("Error, something goes wrong!");
+        });
+      }
+    );
 
     return res.status(200).send("Succesfully!");
   });
+});
+
+app.post("/collaborate", (req: Request, res: Response) => {
+  const { user_id, project_id } = req.body;
+
+  db.query(
+    "INSERT INTO `users_projects` (`project_id`, `user_id`) VALUES (?, ?);",
+    [project_id, user_id],
+    (error: Error, result: any) => {
+      if (error) return res.status(500).send(error);
+      return res.status(200).json(result);
+    }
+  );
+});
+
+app.post("/remove_collaborate", (req: Request, res: Response) => {
+  const { user_id, project_id } = req.body;
+
+  db.query(
+    "DELETE FROM `users_projects` WHERE `users_projects`.`project_id` = ? AND `users_projects`.`user_id` = ?",
+    [project_id, user_id],
+    (error: Error, result: any) => {
+      if (error) return res.status(500).send(error);
+      return res.status(200).json(result);
+    }
+  );
 });
 
 // check if user is logged in and has a session

@@ -1,20 +1,26 @@
 import React from "react";
 
-import MenuTitle from "../MenuTitle/MenuTitle";
-// import MemberCard from "../MemberCard/MemberCard";
+import type { Member } from "@/app/redux/features/get_members.slice";
 
-// import type { Members } from "@/app/redux/features/user.slice";
+import MemberCard from "../MemberCard/MemberCard";
 
-export default function TeamMembers() {
-  // const fakeArray2 = new Array(2).fill(0);
+interface TTeamMembers {
+  members: Member[] | null;
+  user_id: number | null;
+}
+
+export default function TeamMembers({ members, user_id }: TTeamMembers) {
   return (
     <div>
-      <MenuTitle>Team members</MenuTitle>
-      {/* <div>
-        {members.map((_, idx) => {
-          return <MemberCard key={idx} />;
-        })}
-      </div> */}
+      <div className="mt-3">
+        {members && members.length > 0 && (
+          <>
+            {members.map((member, idx) => {
+              return <MemberCard key={idx} member={member} user_id={user_id} />;
+            })}
+          </>
+        )}
+      </div>
     </div>
   );
 }

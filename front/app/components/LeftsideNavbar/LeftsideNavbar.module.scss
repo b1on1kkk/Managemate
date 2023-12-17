@@ -1,5 +1,5 @@
 .aside_menu {
-  @apply w-16 fixed left-0 top-0 h-full flex flex-col overflow-hidden border-r-1 p-2 gap-8 z-50 transition-all duration-200 bg-white;
+  @apply w-16 fixed left-0 top-0 h-full flex flex-col overflow-hidden border-r-1 p-2 gap-8 z-40 transition-all duration-200 bg-white;
 }
 
 .menu_expanded {

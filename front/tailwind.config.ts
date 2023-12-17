@@ -21,10 +21,13 @@ const config: Config = {
       },
       inset: {
         "7": "5.25rem"
-        // "28": "7rem"
       },
       minWidth: {
-        "90": "90px"
+        "90": "90px",
+        "70": "70px"
+      },
+      colors: {
+        modal_background: "rgba(0, 0, 0, 0.4)"
       }
     }
   }

@@ -36,9 +36,6 @@ export const User = createSlice({
     builder
       .addCase(getUser.fulfilled, (state, action) => {
         state.error = null;
-
-        console.log(action.payload.data);
-
         state.user = action.payload.data;
       })
       .addCase(getUser.rejected, (state, action) => {

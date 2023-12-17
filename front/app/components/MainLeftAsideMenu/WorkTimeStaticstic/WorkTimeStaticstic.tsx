@@ -6,7 +6,7 @@ export default function WorkTimeStaticstic() {
     <div>
       <MenuTitle>Time</MenuTitle>
 
-      <div className="flex gap-5 p-4 flex-col border-1 rounded-lg ">
+      <div className="flex gap-5 p-4 flex-col border-1 rounded-lg mt-3">
         <div className="text-sm text-gray-400">TOTAL HOURS</div>
         <div className="text-2xl font-semibold">23.7 hours</div>
         <div className="text-sm flex items-center gap-2 text-gray-400">
