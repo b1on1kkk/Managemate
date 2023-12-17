@@ -12,7 +12,7 @@ import { Project } from "@/app/redux/features/projects.slice";
 import { useDispatch } from "react-redux";
 import { AppDispatch } from "@/app/redux/store";
 
-import { getProjectMembers } from "@/app/redux/features/project_members.slice";
+// import { getProjectMembers } from "@/app/redux/features/user.slice";
 
 export default function ProjectCard({ project }: { project: Project }) {
   const Icon = icons[project.icon_name as keyof typeof icons];
@@ -22,7 +22,7 @@ export default function ProjectCard({ project }: { project: Project }) {
   const dispatch = useDispatch<AppDispatch>();
 
   function getMembers() {
-    dispatch(getProjectMembers(project.user_id.toString()));
+    // dispatch(getProjectMembers(project.user_id.toString()));
   }
 
   return (

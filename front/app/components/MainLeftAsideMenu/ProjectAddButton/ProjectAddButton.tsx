@@ -3,18 +3,37 @@
 import { Plus } from "lucide-react";
 import { useState } from "react";
 
-// import { useSelector, useDispatch } from "react-redux";
-// import { AppDispatch, RootState } from "@/app/redux/store";
+import axios from "axios";
 
-// import { addProject } from "@/app/redux/features/projects.slice";
+import { useSelector, useDispatch } from "react-redux";
+import { AppDispatch, RootState } from "@/app/redux/store";
+
+import { getProjects } from "@/app/redux/features/projects.slice";
 
 export default function ProjectAddButton() {
   const [isHover, setIsHover] = useState<boolean>(false);
   const [newProject, setNewProject] = useState<boolean>(false);
   const [projectTitle, setProjectTitle] = useState<string>("");
+  const dispatch = useDispatch<AppDispatch>();
+  const user = useSelector((state: RootState) => state.user.user);
 
-  // const todoList = useSelector((state: RootState) => state.project_reducer);
-  // const dispatch = useDispatch<AppDispatch>();
+  async function CreateNewProject() {
+    try {
+      await axios.post("http://localhost:2000/new_project", {
+        title: projectTitle,
+        icon_name: "Apple",
+        overview: "",
+        tasks: JSON.stringify([]),
+        notes: JSON.stringify([]),
+        questions: JSON.stringify([]),
+        user_added_id: user![0].id
+      });
+
+      dispatch(getProjects(user![0].id));
+    } catch (error) {
+      console.log(error);
+    }
+  }
 
   // function CreateNewProject() {
   //   dispatch(
@@ -48,7 +67,7 @@ export default function ProjectAddButton() {
           <div className="flex justify-end gap-2 text-sm">
             <button
               className={`px-2 py-1 border-1 border-green-500 rounded-lg hover:bg-green-500 transition-all duration-200 ease-in`}
-              // onClick={CreateNewProject}
+              onClick={CreateNewProject}
             >
               Accept
             </button>

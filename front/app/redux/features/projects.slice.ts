@@ -24,9 +24,11 @@ interface Projects {
 
 export const getProjects = createAsyncThunk(
   "projects/getProjects",
-  async (_, thunkAPI) => {
+  async (user_id: number | string, thunkAPI) => {
     try {
-      const res = await axios.get(`http://localhost:2005/projects`);
+      const res = await axios.get(
+        `http://localhost:2000/projects?user_id=${user_id}`
+      );
 
       return res;
     } catch (error) {
@@ -43,17 +45,7 @@ const initialState: Projects = {
 export const Projects = createSlice({
   name: "Projects",
   initialState,
-  reducers: {
-    // addProject: (state, action) => {
-    //   state.projects.push(action.payload);
-    // },
-    // removeProject: (state, action) => {
-    //   return {
-    //     projects: state.projects.filter((todo) => todo.id !== action.payload),
-    //     error: state.error
-    //   };
-    // }
-  },
+  reducers: {},
   extraReducers: (builder) => {
     builder
       .addCase(getProjects.fulfilled, (state, action) => {
@@ -65,5 +57,4 @@ export const Projects = createSlice({
   }
 });
 
-// export const { addProject, removeProject } = Projects.actions;
 export default Projects.reducer;

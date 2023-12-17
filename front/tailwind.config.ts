@@ -18,6 +18,13 @@ const config: Config = {
       },
       width: {
         88: "22rem"
+      },
+      inset: {
+        "7": "5.25rem"
+        // "28": "7rem"
+      },
+      minWidth: {
+        "90": "90px"
       }
     }
   }

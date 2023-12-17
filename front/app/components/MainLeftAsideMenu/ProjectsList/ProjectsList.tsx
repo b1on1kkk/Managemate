@@ -15,19 +15,18 @@ export default function ProjectsList() {
   const projects = useSelector(
     (state: RootState) => state.project_reducer.projects
   );
+  const user = useSelector((state: RootState) => state.user.user);
 
   const [isMounted, setIsMounted] = useState(true);
 
   const dispatch = useDispatch<AppDispatch>();
 
   useEffect(() => {
-    if (isMounted) {
-      dispatch(getProjects());
+    if (isMounted && user && user.length > 0) {
+      dispatch(getProjects(user![0].id));
       setIsMounted(false);
     }
-  }, [projects, dispatch, isMounted]);
-
-  // if (projects.length > 0) console.log(JSON.parse(projects[0].tasks));
+  }, [projects, dispatch, isMounted, user]);
 
   return (
     <div>
@@ -38,7 +37,7 @@ export default function ProjectsList() {
             return (
               <Link
                 key={idx}
-                href={`/Projects/${project.title.replace(/ /g, "_")}`}
+                href={`/projects/${project.title.replace(/ /g, "_")}/tasks`}
               >
                 <ProjectCard project={project} />
               </Link>

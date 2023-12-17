@@ -1,16 +1,9 @@
-"use client";
-
-import React from "react";
-
-import { useSelector } from "react-redux";
-import { RootState } from "@/app/redux/store";
-
 export default function Project() {
-  const projects = useSelector(
-    (state: RootState) => state.project_reducer.projects
+  return (
+    <div className="flex-1 flex justify-center items-center ">
+      <div className="text-xl p-2 bg-gray-400 rounded-lg text-white">
+        Select sub menu to start working
+      </div>
+    </div>
   );
-
-  console.log(projects);
-
-  return <main className="flex-1">Chosen Project</main>;
 }

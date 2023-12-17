@@ -1,16 +1,29 @@
 "use client";
 
-import Link from "next/link";
-import { usePathname } from "next/navigation";
-import { useState } from "react";
-
-import { UsersRound } from "lucide-react";
-import { ASIDE_MENU_NAVBAR } from "../../../constants/AsideMenuNavBar";
-
 import styles from "./LeftsideNavbar.module.scss";
+import axios from "axios";
+import Link from "next/link";
+import { useState } from "react";
+import { usePathname } from "next/navigation";
+
+// icons
+import { UsersRound } from "lucide-react";
+//
+
+// constants
+import { ASIDE_MENU_NAVBAR } from "../../../constants/AsideMenuNavBar";
+//
+
+// redux
+import { useDispatch } from "react-redux";
+import { AppDispatch } from "@/app/redux/store";
+import { getUser } from "@/app/redux/features/user.slice";
+//
 
 export default function LeftsideNavbar() {
   const pathname = usePathname();
+  const dispatch = useDispatch<AppDispatch>();
+
   const [isHovered, setIsHovered] = useState<boolean>(false);
 
   return (
@@ -49,10 +62,19 @@ export default function LeftsideNavbar() {
         })}
       </div>
 
-      <div className="m-3">
-        <span className="opacity-60">
+      <div className="m-3 flex items-center">
+        <button
+          className="opacity-60"
+          onClick={() => {
+            axios.post("http://localhost:2000/logout");
+
+            setTimeout(() => {
+              dispatch(getUser());
+            }, 500);
+          }}
+        >
           {ASIDE_MENU_NAVBAR[ASIDE_MENU_NAVBAR.length - 1].icon}
-        </span>
+        </button>
       </div>
     </aside>
   );

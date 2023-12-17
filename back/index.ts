@@ -1,89 +1,192 @@
 import express, { Express, Request, Response } from "express";
-import session from "express-session";
+
+const mysql = require("mysql");
+const session = require("express-session");
+const MySQLStore = require("express-mysql-session")(session);
+const bodyParser = require("body-parser");
+const cors = require("cors");
+const cookieParser = require("cookie-parser");
 
 const app: Express = express();
 
-const mysql = require("mysql");
-
-export const db = mysql.createConnection({
+// database connection
+const db = mysql.createConnection({
   host: "localhost",
   user: "root",
   password: "",
   database: "managemate"
 });
+//
 
-// middlewares
-const cors = require("cors");
-const bodyParser = require("body-parser");
-const cookieParser = require("cookie-parser");
-
-app.use(bodyParser.json());
-app.use(bodyParser.text());
-app.use(bodyParser.urlencoded({ extended: true }));
+app.use(express.json());
+app.use(
+  cors({
+    origin: ["http://localhost:3000"],
+    methods: ["GET", "POST"],
+    credentials: true
+  })
+);
 app.use(cookieParser());
+app.use(bodyParser.urlencoded({ extended: true }));
+
+const sessionStore = new MySQLStore(
+  {
+    expiration: 10800000,
+    createDatabaseTable: true,
+    schema: {
+      tableName: "sessiontbl",
+      columnNames: {
+        session_id: "session_id",
+        expires: "expires",
+        data: "data"
+      }
+    }
+  },
+  db
+);
 
 app.use(
   session({
-    secret: "user",
+    key: "user_id",
+    secret: "thiskeyissecretdonotshowitanyone",
+    store: sessionStore,
     resave: false,
-    saveUninitialized: true,
-    cookie: { maxAge: 26280000, secure: true, httpOnly: false }
+    saveUninitialized: false,
+    cookie: {
+      expires: 10800000
+    }
   })
 );
 
-const corsConfig = {
-  origin: true,
-  credentials: true
-};
-app.use(cors(corsConfig));
-app.options("*", cors(corsConfig));
-//
+interface User {
+  id: number;
+  project_id: number;
+  name: string;
+  mail: string;
+  hash_key: string;
+  password: string;
+}
 
-app.get("/projects", (req: Request, res: Response) => {
-  db.query("SELECT * FROM projects", (error: Error, result: any) => {
-    if (error) return res.status(500).send("Error, something goes wrong!");
+app.post("/login", (req: Request, res: Response) => {
+  // gettings name and password from frontend
+  const { mail, password } = req.body;
 
-    return res.status(200).json(result).end();
-  });
-});
-
-app.get("/users", (req: Request, res: Response) => {
-  db.query("SELECT * FROM users", (error: Error, result: any) => {
-    if (error) return res.status(500).send("Error, something goes wrong!");
-
-    return res.status(200).json(result).end();
-  });
-});
-
-app.get("/members", (req: Request, res: Response) => {
-  const { id } = req.query;
-
+  // then get all users
   db.query(
-    "SELECT * FROM users WHERE projects_id = ?",
-    id,
-    (error: Error, result: any) => {
-      if (error) return res.status(500).send("Error, something goes wrong!");
+    "SELECT * FROM users WHERE mail = ? AND password = ?",
+    [mail, password],
+    (error: Error, result: User[]) => {
+      if (error) return res.status(500).send(error);
 
-      return res.status(200).json(result).end();
+      if (result.length > 0) {
+        req.session!.user_key = result[0].hash_key;
+        return res.status(200).send("Logged in!");
+      }
+
+      return res.status(500).send("User is not found!");
     }
   );
 });
 
 app.post("/sing_up", (req: Request, res: Response) => {
+  // if this is a new user, insert its inf to database
   db.query("INSERT INTO users SET ?", [req.body], (error: Error) => {
     if (error) return res.status(500).send(error);
   });
 
-  res.cookie("cookie-name", "cookie-value", { maxAge: 900000, httpOnly: true });
+  // set its hash_key
+  req.session!.user_key = req.body.hash_key;
 
-  // console.log(req.body.hash_key);
-
-  // res.cookie("hash_key", req.body.hash_key);
-
-  // req.session!.user_key = req.body.hash_key;
-
-  // console.log(req.session!.user_key);
+  // and show text
   return res.status(200).send("Successfully!");
+});
+
+// destroy session
+app.post("/logout", (req: Request, res: Response) => {
+  req.session?.destroy((err) => {
+    if (!err) res.send("Logged out!");
+  });
+});
+
+app.get("/user", (req: Request, res: Response) => {
+  db.query(
+    "SELECT id, name, mail FROM users WHERE hash_key = ?",
+    [req.session?.user_key],
+    (error: Error, result: any) => {
+      if (error) return res.status(500).send(error);
+      return res.status(200).json(result);
+    }
+  );
+});
+
+app.get("/projects", (req: Request, res: Response) => {
+  const { user_id } = req.query;
+
+  db.query(
+    "SELECT project_id FROM users_projects WHERE user_id = ?",
+    [user_id],
+    (error: Error, project_id: any) => {
+      if (error) return res.status(500).send("Error, something goes wrong!");
+
+      const buff_indexes: number[] = [];
+
+      JSON.parse(JSON.stringify(project_id)).forEach((idx: any) => {
+        buff_indexes.push(idx.project_id);
+      });
+
+      db.query(
+        `SELECT * FROM projects WHERE id IN (${buff_indexes.join(",")})`,
+        (error: Error, projects: any) => {
+          if (error) return console.log(error);
+
+          return res.status(200).json(projects);
+        }
+      );
+    }
+  );
+});
+
+app.post("/new_project", (req: Request, res: Response) => {
+  const { title, icon_name, overview, tasks, notes, questions } = req.body;
+  const buff_obj = {
+    title: title,
+    icon_name: icon_name,
+    overview: overview,
+    tasks: tasks,
+    notes: notes,
+    questions: questions
+  };
+
+  db.query("INSERT INTO projects SET ?", [buff_obj], (error: Error) => {
+    if (error) return res.status(500).send("Error, something goes wrong!");
+
+    db.query("SELECT * FROM projects", (error: Error, projects: any) => {
+      if (error) return res.status(500).send("Error, something goes wrong!");
+
+      const addedProject = projects[projects.length - 1].id;
+      const user_id = req.body.user_added_id;
+
+      const query = `INSERT INTO users_projects (user_id, project_id) VALUES (${user_id}, ${addedProject})`;
+
+      db.query(query, (error: Error) => {
+        if (error) console.log(error);
+      });
+    });
+
+    return res.status(200).send("Succesfully!");
+  });
+});
+
+// check if user is logged in and has a session
+app.get("/session_status", (req: Request, res: Response) => {
+  if (req.session?.user_key) {
+    // if has show status code and message
+    return res.status(200).json({
+      status: 200,
+      message: "Logged!"
+    });
+  }
+  return res.status(401).json({ status: 401, message: "Log in first!" });
 });
 
 app.listen(2000, () => {
