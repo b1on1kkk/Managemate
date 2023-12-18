@@ -157,7 +157,8 @@ app.get("/members", (req: Request, res: Response) => {
 });
 
 app.post("/new_project", (req: Request, res: Response) => {
-  const { title, icon_name, overview, tasks, notes, questions } = req.body;
+  const { title, icon_name, overview, tasks, notes, questions, role } =
+    req.body;
   const buff_obj = {
     title: title,
     icon_name: icon_name,
@@ -176,9 +177,10 @@ app.post("/new_project", (req: Request, res: Response) => {
         if (error) return res.status(500).send("Error, something goes wrong!");
 
         const user_id = req.body.user_added_id;
-        const query = `INSERT INTO users_projects (user_id, project_id) VALUES (${user_id}, ${project[0].id})`;
+        const query =
+          "INSERT INTO `users_projects` (`user_id`, `project_id`, `role`) VALUES (?, ?, ?)";
 
-        db.query(query, (error: Error) => {
+        db.query(query, [user_id, project[0].id, role], (error: Error) => {
           if (error)
             return res.status(500).send("Error, something goes wrong!");
         });
@@ -190,11 +192,11 @@ app.post("/new_project", (req: Request, res: Response) => {
 });
 
 app.post("/collaborate", (req: Request, res: Response) => {
-  const { user_id, project_id } = req.body;
+  const { user_id, project_id, role } = req.body;
 
   db.query(
-    "INSERT INTO `users_projects` (`project_id`, `user_id`) VALUES (?, ?);",
-    [project_id, user_id],
+    "INSERT INTO `users_projects` (`project_id`, `user_id`, `role`) VALUES (?, ?, ?);",
+    [project_id, user_id, role],
     (error: Error, result: any) => {
       if (error) return res.status(500).send(error);
       return res.status(200).json(result);

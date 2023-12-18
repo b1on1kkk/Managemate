@@ -41,7 +41,8 @@ export default function NewMemberModal({
     try {
       await axios.post("http://localhost:2000/collaborate", {
         user_id: user_id,
-        project_id: project_id
+        project_id: project_id,
+        role: false
       });
 
       dispatch(getMembers(project_id));

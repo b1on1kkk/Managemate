@@ -10,7 +10,7 @@ export default function ProjectControlPanel() {
   const currentPath = splittedArray[splittedArray.length - 2];
 
   return (
-    <div className="flex px-7 items-center">
+    <div className="flex px-7 items-center border-b-1">
       <div className="flex-1 flex gap-10">
         {PROJECT_MENU_ROUTING.map((item, idx) => {
           const lowercaseItem = item.toLowerCase();
@@ -18,7 +18,7 @@ export default function ProjectControlPanel() {
           return (
             <Link href={`/projects/${currentPath}/${lowercaseItem}`} key={idx}>
               <div
-                className={`py-4 text-base font-medium hover:border-b-2 border-indigo-500 ${
+                className={`py-4 text-base hover:border-b-2 border-indigo-500 font-semibold ${
                   pathname.includes(lowercaseItem) ? "border-b-2" : ""
                 }`}
               >

@@ -17,14 +17,19 @@ import { ChevronDown, Phone, AtSign } from "lucide-react";
 interface TMemberCard {
   member: Member;
   user_id: number | null;
+  user_role: number;
 }
 
-export default function MemberCard({ member, user_id }: TMemberCard) {
+export default function MemberCard({
+  member,
+  user_id,
+  user_role
+}: TMemberCard) {
   const [click, setClick] = useState<boolean>(false);
   const dispatch = useDispatch<AppDispatch>();
 
-  const project_id = useSelector(
-    (state: RootState) => state.service.chosen_project
+  const project_service_data = useSelector(
+    (state: RootState) => state.service.project
   );
 
   async function RemoveUserFromMemberShip(user_id: number, project_id: number) {
@@ -73,7 +78,7 @@ export default function MemberCard({ member, user_id }: TMemberCard) {
         </button>
       </div>
       {click && (
-        <div className="flex flex-col gap-2 text-sm">
+        <div className="flex flex-col gap-2 text-sm h-full justify-center">
           <div className="flex justify-between">
             <Phone width={17} height={17} className="opacity-80" />
             <span>{member.mail}</span>
@@ -82,19 +87,24 @@ export default function MemberCard({ member, user_id }: TMemberCard) {
             <AtSign width={17} height={17} className="opacity-80" />
             <span>@b1on1kkk</span>
           </div>
-          {user_id !== member.id ? (
+          {user_id !== member.id && user_role === 1 ? (
             <button
               className="py-1 bg-red-500 rounded-lg text-white text-center select-none hover:bg-red-600 transition-all duration-200 ease-in"
               onClick={() => {
-                RemoveUserFromMemberShip(member.id, project_id!);
+                RemoveUserFromMemberShip(
+                  member.id,
+                  project_service_data.chosen_project!
+                );
               }}
             >
               Remove from membership
             </button>
-          ) : (
+          ) : user_id === member.id ? (
             <button className="py-1 bg-green-500 rounded-lg text-white text-center select-none hover:bg-green-600 transition-all duration-200 ease-in">
               Go to profile
             </button>
+          ) : (
+            <></>
           )}
         </div>
       )}

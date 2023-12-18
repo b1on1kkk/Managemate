@@ -23,14 +23,12 @@ export default function RootLayout({
   const dispatch = useDispatch<AppDispatch>();
   const [choosenIdProject, setChoosenIdProject] = useState<number | null>(null);
 
-  const project_id = useSelector(
-    (state: RootState) => state.service.chosen_project
-  );
+  const project_id = useSelector((state: RootState) => state.service.project);
 
   useEffect(() => {
-    if (isMounted) {
-      dispatch(getMembers(project_id!));
-      setChoosenIdProject(project_id);
+    if (isMounted && project_id) {
+      dispatch(getMembers(project_id.chosen_project!));
+      setChoosenIdProject(project_id.chosen_project);
       setIsMounted(false);
     }
   }, [isMounted, dispatch, project_id]);

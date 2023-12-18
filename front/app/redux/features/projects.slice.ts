@@ -10,6 +10,7 @@ export interface Project {
   tasks: string;
   notes: string;
   questions: string;
+  role: number;
 }
 
 interface Projects {

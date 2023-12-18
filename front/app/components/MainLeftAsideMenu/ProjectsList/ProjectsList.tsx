@@ -7,7 +7,7 @@ import type { Project } from "@/app/redux/features/projects.slice";
 
 interface TProjectsList {
   projects: Project[];
-  set_chosen_project: (id: number) => void;
+  set_chosen_project: (role: number, chosen_project: number) => void;
 }
 
 export default function ProjectsList({
@@ -24,7 +24,7 @@ export default function ProjectsList({
                 <Link
                   key={idx}
                   href={`/projects/${project.title.replace(/ /g, "_")}/tasks`}
-                  onClick={() => set_chosen_project(project.id)}
+                  onClick={() => set_chosen_project(project.role, project.id)}
                 >
                   <ProjectCard project={project} />
                 </Link>

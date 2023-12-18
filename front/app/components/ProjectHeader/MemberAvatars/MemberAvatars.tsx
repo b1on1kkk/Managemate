@@ -1,7 +1,5 @@
 import type { Member } from "@/app/redux/features/get_members.slice";
 
-let z_index_counter = 10;
-
 interface TMemberAvatars {
   members: Member[] | null;
   residueLength: number | null;
@@ -20,13 +18,10 @@ export default function MemberAvatars({
           {residueMembersArray.map((_, idx) => {
             const item = (
               <div
-                className={`w-10 h-10 bg-gray-400 rounded-full border-1 border-white z-${
-                  idx === 0 ? z_index_counter - 10 : z_index_counter
-                }`}
+                className={`w-10 h-10 bg-gray-400 rounded-full border-1 border-white`}
                 key={idx}
               />
             );
-            z_index_counter += 10;
             return item;
           })}
         </>

@@ -37,12 +37,11 @@ export default function MainLeftAsideMenu() {
   const project_pending = useSelector(
     (state: RootState) => state.project_reducer.pending
   );
+  const project_service_data = useSelector(
+    (state: RootState) => state.service.project
+  );
 
   const user = useSelector((state: RootState) => state.user.user);
-
-  const project_id = useSelector(
-    (state: RootState) => state.service.chosen_project
-  );
 
   useEffect(() => {
     if (isMounted && user && user.length > 0) {
@@ -62,12 +61,14 @@ export default function MainLeftAsideMenu() {
           ) : (
             <ProjectsList
               projects={projects}
-              set_chosen_project={(id) => dispatch(setProject(id))}
+              set_chosen_project={(role, chosen_project) =>
+                dispatch(setProject({ role, chosen_project }))
+              }
             />
           )}
         </div>
 
-        {project_id && (
+        {project_service_data && project_service_data.chosen_project && (
           <div>
             <MenuTitle>Team members</MenuTitle>
             {members_pending === "pending" ? (
@@ -75,7 +76,11 @@ export default function MainLeftAsideMenu() {
             ) : (
               <>
                 {userState.length > 0 && (
-                  <TeamMembers members={members} user_id={userState[0].id} />
+                  <TeamMembers
+                    members={members}
+                    user_id={userState[0].id}
+                    user_role={project_service_data.role}
+                  />
                 )}
               </>
             )}

@@ -26,7 +26,8 @@ export default function ProjectAddButton() {
         tasks: JSON.stringify([]),
         notes: JSON.stringify([]),
         questions: JSON.stringify([]),
-        user_added_id: user![0].id
+        user_added_id: user![0].id,
+        role: true
       });
 
       dispatch(getProjects(user![0].id));

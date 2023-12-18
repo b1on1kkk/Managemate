@@ -2,12 +2,18 @@ import { createSlice } from "@reduxjs/toolkit";
 
 interface OpenStatus {
   status: boolean;
-  chosen_project: number | null;
+  project: {
+    chosen_project: null;
+    role: number;
+  };
 }
 
 const initialState: OpenStatus = {
   status: false,
-  chosen_project: null
+  project: {
+    chosen_project: null,
+    role: 0
+  }
 };
 
 export const Service = createSlice({
@@ -18,7 +24,7 @@ export const Service = createSlice({
       state.status = action.payload;
     },
     setProject: (state, action) => {
-      state.chosen_project = action.payload;
+      state.project = action.payload;
     }
   }
 });
