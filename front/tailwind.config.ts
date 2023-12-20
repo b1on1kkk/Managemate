@@ -26,9 +26,15 @@ const config: Config = {
         "90": "90px",
         "70": "70px"
       },
+      maxWidth: {
+        "25": "100px"
+      },
       colors: {
         modal_background: "rgba(0, 0, 0, 0.4)"
       }
+      // height: {
+      //   70: "280px"
+      // }
     }
   }
 };

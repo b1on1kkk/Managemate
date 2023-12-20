@@ -1,8 +1,12 @@
 import { MoreVertical, ListChecks } from "lucide-react";
 
-import { TODO_CARD_FOOTER_ICONS } from "@/constants/TodoCardFooterIcons";
+import type { TTodoCard } from "@/app/redux/features/get_tasks.slice";
 
-export default function TodoCard() {
+// utils
+import { TODO_CARD_FOOTER_ICONS } from "@/constants/TodoCardFooterIcons";
+//
+
+export default function TodoCard({ todoCard }: { todoCard: TTodoCard }) {
   const fakeArray = new Array(4).fill(0);
 
   return (
@@ -11,8 +15,14 @@ export default function TodoCard() {
         {/* card header */}
         <div className="flex items-center mb-4">
           <div className="flex-1">
-            <div className="px-4 py-2 bg-orange-100 text-sm font-semibold text-orange-400 rounded-full inline-block">
-              UX stages
+            <div
+              className={`px-4 py-2 ${
+                todoCard.htag_color !== "bg-gray-200"
+                  ? `${todoCard.htag_color} text-white`
+                  : `${todoCard.htag_color} text-black`
+              } text-sm font-semibold rounded-full inline-block`}
+            >
+              {todoCard.sub_title}
             </div>
           </div>
 
@@ -24,12 +34,9 @@ export default function TodoCard() {
 
         {/* main */}
         <div className="flex flex-col gap-2">
-          <div className="font-semibold text-lg">Wireframing</div>
+          <div className="font-semibold text-lg">{todoCard.title}</div>
           <div className="text-xs h-12 overflow-hidden text-gray-400">
-            Lorem ipsum dolor sit amet consectetur adipisicing elit. Voluptatum,
-            aliquid nobis blanditiis accusamus nulla quaerat. Quia dolores odio
-            reprehenderit corporis blanditiis amet animi iusto aut, harum ex eum
-            sed beatae.
+            {todoCard.about}
           </div>
           <div>
             <div className="inline-flex p-2 text-sm border-1 rounded-lg gap-3">
