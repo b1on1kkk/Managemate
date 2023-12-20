@@ -1,0 +1,7 @@
+.todoCard {
+  @apply bg-white border-1 rounded-md flex flex-col justify-between transition-all duration-200 h-72;
+}
+
+.todoCardExpanded {
+  @apply h-96;
+}

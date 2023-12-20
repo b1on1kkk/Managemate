@@ -5,13 +5,15 @@ export default function Input({
   styles,
   cb,
   value,
-  placeholder
+  placeholder,
+  onBlur
 }: {
   maxInputLength: number;
   styles: string;
   value: string;
   cb: (e: React.ChangeEvent<HTMLInputElement>) => void;
   placeholder: string;
+  onBlur?: (e: React.FocusEvent<HTMLInputElement>) => void;
 }) {
   //   console.log(maxInputLength);
 
@@ -23,6 +25,7 @@ export default function Input({
       className={styles}
       onChange={(e) => cb(e)}
       value={value}
+      onBlur={onBlur}
     />
   );
 }
