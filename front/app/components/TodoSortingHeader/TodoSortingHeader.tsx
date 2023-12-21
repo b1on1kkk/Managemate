@@ -1,12 +1,17 @@
+"use client";
+
+// components
+import AddingNewTodoCard from "./AddingNewTodoCard/AddingNewTodoCard";
 import { MoreVertical, Plus } from "lucide-react";
+//
 
-import { TBoard } from "@/app/redux/features/get_tasks.slice";
-
+// redux
 import { useDispatch } from "react-redux";
 import { AppDispatch } from "@/app/redux/store";
 import { addingNewTaskStatus } from "@/app/redux/features/get_tasks.slice";
+//
 
-import AddingNewTodoCard from "./AddingNewTodoCard/AddingNewTodoCard";
+import type { TBoard } from "@/app/redux/features/get_tasks.slice";
 
 export default function TodoSortingHeader({ board }: { board: TBoard }) {
   const dispatch = useDispatch<AppDispatch>();
@@ -18,7 +23,7 @@ export default function TodoSortingHeader({ board }: { board: TBoard }) {
         <div>{board.title}</div>
         <div className="flex-1">
           <span className="bg-white px-4 py-1 text-xs rounded-full flex-1">
-            {3}
+            {board.items.length}
           </span>
         </div>
         <MoreVertical width={22} height={22} />

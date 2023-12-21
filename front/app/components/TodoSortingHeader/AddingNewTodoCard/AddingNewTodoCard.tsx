@@ -1,4 +1,5 @@
 import { useReducer, useState } from "react";
+import axios from "axios";
 
 // components
 import Input from "../Input/Input";
@@ -8,7 +9,6 @@ import InputWrapper from "./InputWrapper/InputWrapper";
 //
 
 // redux
-import { addingNewTask } from "@/app/redux/features/get_tasks.slice";
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "@/app/redux/store";
 //
@@ -25,9 +25,14 @@ import { addingNewTaskStatus } from "@/app/redux/features/get_tasks.slice";
 import { TodoCardsCounter } from "./utils/TodoCardsCounter";
 //
 
+import { getTasks } from "@/app/redux/features/get_tasks.slice";
+
 export default function AddingNewTodoCard({ board_id }: { board_id: number }) {
   const dispatch = useDispatch<AppDispatch>();
   const tasks = useSelector((state: RootState) => state.tasks.tasks);
+  const current_project_id = useSelector(
+    (state: RootState) => state.service.project.chosen_project
+  );
   const idx = TodoCardsCounter(tasks);
 
   const [newTodoCard, setNewTodoCard] = useReducer(NewTodoCardReducer, {
@@ -72,24 +77,42 @@ export default function AddingNewTodoCard({ board_id }: { board_id: number }) {
   }
   //
 
-  function AddNewTodoCard() {
+  async function AddNewTodoCard() {
     if (
       !Object.values(newTodoCardValidity).includes(true) &&
       todos.length > 0
     ) {
-      dispatch(
-        addingNewTask({
-          id: board_id,
-          todo: {
-            id: idx,
-            sub_title: newTodoCard.htag_task,
-            title: newTodoCard.title,
-            about: newTodoCard.short_bio,
-            htag_color: newTodoCard.htag_color,
-            todos: todos
-          }
-        })
-      );
+      try {
+        const prev_tasks = await axios.get(
+          `http://localhost:2000/tasks?project_id=${current_project_id}`
+        );
+
+        const parsed = JSON.parse(prev_tasks.data[0].tasks);
+
+        await axios.post("http://localhost:2000/update_tasks", {
+          todo: JSON.stringify([
+            ...parsed,
+            {
+              todo_inf: {
+                id: idx,
+                sub_title: newTodoCard.htag_task,
+                title: newTodoCard.title,
+                about: newTodoCard.short_bio,
+                htag_color: newTodoCard.htag_color,
+                todos: todos
+              },
+              board_id: board_id
+            }
+          ]),
+          project_id: current_project_id
+        });
+
+        dispatch(addingNewTaskStatus({ id: board_id, status: false }));
+      } catch (error) {
+        console.log(error);
+      }
+
+      dispatch(getTasks(current_project_id!));
     }
   }
 

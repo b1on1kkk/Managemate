@@ -217,6 +217,33 @@ app.post("/remove_collaborate", (req: Request, res: Response) => {
   );
 });
 
+app.post("/update_tasks", (req: Request, res: Response) => {
+  const { todo, project_id } = req.body;
+
+  db.query(
+    `UPDATE projects SET tasks = ? WHERE id = ?`,
+    [todo, project_id],
+    (error: Error, result: any) => {
+      if (error) return res.status(500).send(error);
+      return res.status(200).json(result);
+    }
+  );
+});
+
+app.get("/tasks", (req: Request, res: Response) => {
+  const { project_id } = req.query;
+
+  db.query(
+    "SELECT tasks FROM projects WHERE id = ?",
+    [project_id],
+    (error: Error, projects: any) => {
+      if (error) return console.log(error);
+
+      return res.status(200).json(projects);
+    }
+  );
+});
+
 // check if user is logged in and has a session
 app.get("/session_status", (req: Request, res: Response) => {
   if (req.session?.user_key) {

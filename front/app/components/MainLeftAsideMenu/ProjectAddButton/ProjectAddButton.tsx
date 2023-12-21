@@ -11,7 +11,6 @@ import { AppDispatch, RootState } from "@/app/redux/store";
 import { getProjects } from "@/app/redux/features/projects.slice";
 
 export default function ProjectAddButton() {
-  const [isHover, setIsHover] = useState<boolean>(false);
   const [newProject, setNewProject] = useState<boolean>(false);
   const [projectTitle, setProjectTitle] = useState<string>("");
   const dispatch = useDispatch<AppDispatch>();
@@ -31,27 +30,12 @@ export default function ProjectAddButton() {
       });
 
       dispatch(getProjects(user![0].id));
+      setNewProject(!newProject);
+      setProjectTitle("");
     } catch (error) {
       console.log(error);
     }
   }
-
-  // function CreateNewProject() {
-  //   dispatch(
-  //     addProject({
-  //       id: todoList.length + 1,
-  //       title: projectTitle,
-  //       icon_name: "Apple",
-  //       list: []
-  //     })
-  //   );
-
-  //   setIsHover(!isHover);
-  //   setNewProject(!newProject);
-  //   setProjectTitle("");
-  // }
-
-  // console.log(todoList);
 
   return (
     <>
@@ -67,17 +51,14 @@ export default function ProjectAddButton() {
 
           <div className="flex justify-end gap-2 text-sm">
             <button
-              className={`px-2 py-1 border-1 border-green-500 rounded-lg hover:bg-green-500 transition-all duration-200 ease-in`}
+              className={`px-2 py-1 border-1 border-green-500 rounded-lg hover:bg-green-500 hover:text-white transition-all duration-200 ease-in`}
               onClick={CreateNewProject}
             >
               Accept
             </button>
             <button
-              className={`px-2 py-1 border-1 border-red-500 rounded-lg hover:bg-red-500 transition-all duration-200 ease-in`}
-              onClick={() => {
-                setIsHover(!isHover);
-                setNewProject(!newProject);
-              }}
+              className={`px-2 py-1 border-1 border-red-500 rounded-lg hover:bg-red-500 hover:text-white transition-all duration-200 ease-in`}
+              onClick={() => setNewProject(!newProject)}
             >
               Cancel
             </button>
@@ -85,25 +66,13 @@ export default function ProjectAddButton() {
         </div>
       ) : (
         <button
-          className="border-2 border-dashed flex items-center gap-2 justify-center py-3 rounded-lg border-indigo-500 hover:bg-indigo-300 transition-all duration-200 ease-in cursor-pointer"
-          onMouseEnter={() => setIsHover(!isHover)}
-          onMouseLeave={() => setIsHover(!isHover)}
+          className="border-2 border-dashed flex items-center gap-2 justify-center py-3 rounded-lg border-indigo-500 hover:bg-indigo-500 hover:text-white text-indigo-500 transition-all duration-200 ease-in cursor-pointer"
           onClick={() => setNewProject(!newProject)}
         >
           <div>
-            <Plus
-              width={16}
-              height={16}
-              color={isHover ? "white" : "rgb(99 102 241)"}
-            />
+            <Plus width={16} height={16} />
           </div>
-          <span
-            className={` font-semibold ${
-              isHover ? "text-white" : "text-indigo-500"
-            }`}
-          >
-            Add Project
-          </span>
+          <span className={` font-semibold`}>Add Project</span>
         </button>
       )}
     </>

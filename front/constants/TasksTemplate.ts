@@ -1,4 +1,11 @@
-export const TASKS_TEMPLATE = [
+import { TTodoCard } from "@/app/redux/features/get_tasks.slice";
+
+export const TASKS_TEMPLATE: {
+  id: number;
+  title: string;
+  open_add_modal: boolean;
+  items: TTodoCard[];
+}[] = [
   {
     id: 1,
     title: "To Do",

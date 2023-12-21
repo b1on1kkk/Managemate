@@ -6,6 +6,7 @@ import { useState, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { RootState, AppDispatch } from "@/app/redux/store";
 import { getMembers } from "@/app/redux/features/get_members.slice";
+import { getTasks } from "@/app/redux/features/get_tasks.slice";
 //
 
 // components
@@ -18,20 +19,20 @@ export default function RootLayout({
 }: {
   children: React.ReactNode;
 }) {
-  const [isMounted, setIsMounted] = useState(true);
   const status = useSelector((state: RootState) => state.service.status);
+
   const dispatch = useDispatch<AppDispatch>();
   const [choosenIdProject, setChoosenIdProject] = useState<number | null>(null);
 
   const project_id = useSelector((state: RootState) => state.service.project);
 
   useEffect(() => {
-    if (isMounted && project_id) {
+    if (project_id?.chosen_project) {
       dispatch(getMembers(project_id.chosen_project!));
       setChoosenIdProject(project_id.chosen_project);
-      setIsMounted(false);
+      dispatch(getTasks(project_id.chosen_project!));
     }
-  }, [isMounted, dispatch, project_id]);
+  }, [project_id, dispatch]);
 
   return (
     <main className="flex-1 flex flex-col">

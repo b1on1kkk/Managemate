@@ -17,7 +17,8 @@ const config: Config = {
         1: "1px"
       },
       width: {
-        88: "22rem"
+        88: "22rem",
+        100: "400px"
       },
       inset: {
         "7": "5.25rem"
@@ -32,9 +33,6 @@ const config: Config = {
       colors: {
         modal_background: "rgba(0, 0, 0, 0.4)"
       }
-      // height: {
-      //   70: "280px"
-      // }
     }
   }
 };

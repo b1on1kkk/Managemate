@@ -1,21 +1,29 @@
+"use client";
+
+import { useEffect } from "react";
+import axios from "axios";
 import styles from "./TodoCard.module.scss";
 
-import { ChevronDown, ListChecks } from "lucide-react";
+// components
+import { ChevronDown, ListChecks, Trash } from "lucide-react";
 import Todos from "../TodoSortingHeader/AddingNewTodoCard/Todos/Todos";
+//
+
+// redux
+import { useDispatch, useSelector } from "react-redux";
+import { AppDispatch, RootState } from "@/app/redux/store";
+import {
+  showMoreTaskCard,
+  setTodoDone,
+  getTasks
+} from "@/app/redux/features/get_tasks.slice";
+//
 
 // utils
 import { TODO_CARD_FOOTER_ICONS } from "@/constants/TodoCardFooterIcons";
 import { CheckForDoneTasks } from "./utils/CheckForDoneTasks";
 import type { TTodoCard } from "@/app/redux/features/get_tasks.slice";
-//
-
-// redux
-import { useDispatch } from "react-redux";
-import { AppDispatch } from "@/app/redux/store";
-import {
-  showMoreTaskCard,
-  setTodoDone
-} from "@/app/redux/features/get_tasks.slice";
+import { UpdateTasksState } from "@/app/utils/utils";
 //
 
 export default function TodoCard({
@@ -26,8 +34,35 @@ export default function TodoCard({
   board_id: number;
 }) {
   const dispatch = useDispatch<AppDispatch>();
+  const tasks = useSelector((state: RootState) => state.tasks.tasks);
+  const current_project_id = useSelector(
+    (state: RootState) => state.service.project?.chosen_project
+  );
   const fakeArray = new Array(4).fill(0);
   const [totalLength, doneCounter] = CheckForDoneTasks(todoCard);
+
+  useEffect(() => {
+    axios.post("http://localhost:2000/update_tasks", {
+      todo: UpdateTasksState(board_id, tasks, todoCard.id),
+      project_id: current_project_id
+    });
+  }, [tasks, current_project_id, board_id, todoCard.id]);
+
+  async function RemoveTask(todoCardId: number) {
+    const filteredArray = tasks.map((task) => {
+      return {
+        ...task,
+        items: task.items.filter((todo) => todo.id !== todoCardId)
+      };
+    });
+
+    await axios.post("http://localhost:2000/update_tasks", {
+      todo: UpdateTasksState(board_id, filteredArray, todoCard.id),
+      project_id: current_project_id
+    });
+
+    dispatch(getTasks(current_project_id!));
+  }
 
   return (
     <div
@@ -49,6 +84,12 @@ export default function TodoCard({
               {todoCard.sub_title}
             </div>
           </div>
+          <button
+            className="opacity-50 hover:opacity-100 transition-all duration-200 ease-in border-2 border-white hover:border-red-500 rounded-lg p-1"
+            onClick={() => RemoveTask(todoCard.id)}
+          >
+            <Trash width={20} height={20} color="red" />
+          </button>
         </div>
         {/*  */}
 
@@ -97,7 +138,7 @@ export default function TodoCard({
                   todoCard.show_more ? "rotate-180" : ""
                 } transition-all duration-200`}
               >
-                <ChevronDown width={22} height={22} />
+                <ChevronDown width={20} height={20} />
               </button>
             </div>
           </div>
@@ -143,7 +184,7 @@ export default function TodoCard({
           })}
         </div>
 
-        <div className="flex text-base text-gray-400 gap-2">
+        <div className="flex text-base text-gray-400 gap-3">
           {TODO_CARD_FOOTER_ICONS.map((items, idx) => {
             return (
               <div className="flex gap-1 items-center" key={idx}>

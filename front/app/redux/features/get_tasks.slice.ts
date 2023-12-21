@@ -31,11 +31,28 @@ interface TaskDetailedInf {
   pending: string;
 }
 
+//
+export interface parsedTodos {
+  todo_inf: {
+    id: number;
+    sub_title: string;
+    title: string;
+    about: string;
+    htag_color: string;
+    show_more: boolean;
+    todos: TTodo[];
+  };
+  board_id: number;
+}
+//
+
 export const getTasks = createAsyncThunk(
   "tasks/getTasks",
-  async (_, thunkAPI) => {
+  async (project_id: number, thunkAPI) => {
     try {
-      const res = await axios.get(``);
+      const res = await axios.get(
+        `http://localhost:2000/tasks?project_id=${project_id}`
+      );
 
       return res;
     } catch (error) {
@@ -62,23 +79,6 @@ export const Tasks = createSlice({
         ...state,
         tasks: state.tasks.map((board) => {
           if (board.id === id) return { ...board, open_add_modal: status };
-
-          return board;
-        })
-      };
-    },
-    addingNewTask: (state, action) => {
-      const { id, todo }: { id: number; todo: TTodoCard } = action.payload;
-
-      return {
-        ...state,
-        tasks: state.tasks.map((board) => {
-          if (board.id === id)
-            return {
-              ...board,
-              items: [...board.items, todo],
-              open_add_modal: !board.open_add_modal
-            };
 
           return board;
         })
@@ -173,11 +173,30 @@ export const Tasks = createSlice({
   extraReducers: (builder) => {
     builder
       .addCase(getTasks.fulfilled, (state, action) => {
-        // think how to get only tasks of each column
+        state.tasks = TASKS_TEMPLATE;
 
-        state.error = null;
-        // state.tasks = action.payload.data;
-        state.pending = action.meta.requestStatus;
+        // костыли
+        if (action.payload.data[0]?.tasks) {
+          const tasks: parsedTodos[] = JSON.parse(
+            action.payload.data[0]?.tasks
+          );
+
+          if (tasks.length > 0) {
+            state.tasks = state.tasks.map((task) => {
+              if (TaskExist(task.id, tasks)) {
+                return {
+                  ...task,
+                  items: GetTodoItemsByBoardId(task.id, tasks)
+                };
+              }
+              return task;
+            });
+          }
+
+          state.error = null;
+          state.pending = action.meta.requestStatus;
+        }
+        //
       })
       .addCase(getTasks.pending, (state, action) => {
         state.pending = action.meta.requestStatus;
@@ -188,9 +207,29 @@ export const Tasks = createSlice({
   }
 });
 
+/////////////////////////////////////////THINK ABOUT OPT////////////////////////////////////
+
+function TaskExist(board_id: number, parsedTasks: parsedTodos[]) {
+  for (let i = 0; i < parsedTasks.length; i++) {
+    if (parsedTasks[i].board_id === board_id) return true;
+  }
+  return false;
+}
+
+function GetTodoItemsByBoardId(board_id: number, parsedTasks: parsedTodos[]) {
+  const buff: TTodoCard[] = [];
+  for (let i = 0; i < parsedTasks.length; i++) {
+    if (parsedTasks[i].board_id === board_id)
+      buff.push(parsedTasks[i].todo_inf);
+  }
+  return buff;
+}
+
+/////////////////////////////////////////THINK ABOUT OPT////////////////////////////////////
+
 export const {
   addingNewTaskStatus,
-  addingNewTask,
+  // addingNewTask,
   newTasks,
   showMoreTaskCard,
   setTodoDone,

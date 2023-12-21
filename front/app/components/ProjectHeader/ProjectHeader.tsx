@@ -24,12 +24,6 @@ export default function ProjectHeader({ status }: { status: boolean }) {
 
   const dispatch = useDispatch<AppDispatch>();
   const members = useSelector((state: RootState) => state.members.members);
-  // const choosen_project_id = useSelector(
-  //   (state: RootState) => state.service.chosen_project
-  // );
-  // const projects = useSelector(
-  //   (state: RootState) => state.project_reducer.projects
-  // );
 
   useEffect(() => {
     if (members && members.length > 0) {

@@ -3,7 +3,7 @@ import { createSlice } from "@reduxjs/toolkit";
 interface OpenStatus {
   status: boolean;
   project: {
-    chosen_project: null;
+    chosen_project: null | number;
     role: number;
   };
 }

@@ -1,7 +1,0 @@
-.project_card {
-  @apply p-2 flex flex-col gap-2 border-1 rounded-lg hover:bg-indigo-500 transition-all duration-200 h-12 overflow-hidden justify-between mb-3 select-none;
-}
-
-.project_card_expanded {
-  @apply h-24;
-}
