@@ -1,4 +1,4 @@
-import type { Member } from "@/app/redux/features/get_members.slice";
+import type { Member } from "@/app/redux/interfaces/member_interfaces";
 
 interface TMemberAvatars {
   members: Member[] | null;

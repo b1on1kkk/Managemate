@@ -1,20 +1,19 @@
 import axios from "axios";
 
+import { X } from "lucide-react";
+import { useEffect, useState } from "react";
+
+// redux
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "@/app/redux/store";
 import { setStatus } from "@/app/redux/features/service.slice";
+import { getAllUser } from "@/app/redux/features/get_all_users.slice";
+import { getMembers } from "@/app/redux/features/get_members.slice";
+//
 
-import { X } from "lucide-react";
-import { useEffect } from "react";
-
-import { Users, getAllUser } from "@/app/redux/features/get_all_users.slice";
-import { Member, getMembers } from "@/app/redux/features/get_members.slice";
-
-import { useState } from "react";
-
-function FindUser(members: Member[], user_inf: Users) {
-  return members.find((member) => member.id === user_inf.id);
-}
+// utils
+import { FindUser } from "@/app/utils/utils";
+//
 
 export default function NewMemberModal({
   status,

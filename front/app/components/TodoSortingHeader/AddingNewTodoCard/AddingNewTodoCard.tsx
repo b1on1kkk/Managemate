@@ -20,7 +20,7 @@ import {
 } from "./InputsReducer/InputsReducer";
 import { ProfileValidityReducer } from "./InputsReducer/ValitityReducer";
 import { HTAG_TODOCARD_COLORS } from "@/constants/HtagTodoCardColors";
-import type { TTodo } from "@/app/redux/features/get_tasks.slice";
+import type { TTodo } from "@/app/redux/interfaces/tasks_interfaces";
 import { addingNewTaskStatus } from "@/app/redux/features/get_tasks.slice";
 import { TodoCardsCounter } from "./utils/TodoCardsCounter";
 //

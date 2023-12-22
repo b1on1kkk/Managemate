@@ -1,12 +1,6 @@
 import { createSlice } from "@reduxjs/toolkit";
 
-interface OpenStatus {
-  status: boolean;
-  project: {
-    chosen_project: null | number;
-    role: number;
-  };
-}
+import type { OpenStatus } from "../interfaces/service_interfaces";
 
 const initialState: OpenStatus = {
   status: false,

@@ -11,7 +11,7 @@ import { AppDispatch } from "@/app/redux/store";
 import { addingNewTaskStatus } from "@/app/redux/features/get_tasks.slice";
 //
 
-import type { TBoard } from "@/app/redux/features/get_tasks.slice";
+import type { TBoard } from "@/app/redux/interfaces/tasks_interfaces";
 
 export default function TodoSortingHeader({ board }: { board: TBoard }) {
   const dispatch = useDispatch<AppDispatch>();

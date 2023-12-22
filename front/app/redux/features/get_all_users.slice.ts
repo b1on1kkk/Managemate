@@ -1,16 +1,7 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import axios, { AxiosError } from "axios";
 
-export interface Users {
-  id: number;
-  name: string;
-  mail: string;
-}
-
-interface UserDetailedInf {
-  users: Users[] | null;
-  error: AxiosError | null | unknown;
-}
+import type { UserDetailedInf } from "../interfaces/users_interfaces";
 
 export const getAllUser = createAsyncThunk(
   "users/getAllUser",

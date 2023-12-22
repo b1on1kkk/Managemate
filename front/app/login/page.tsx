@@ -1,14 +1,13 @@
 "use client";
-
 import axios, { AxiosError } from "axios";
-
 import { useState } from "react";
-
 import { useRouter } from "next/navigation";
 
+// redux
 import { getUser } from "../redux/features/user.slice";
 import { useDispatch } from "react-redux";
 import { AppDispatch } from "../redux/store";
+//
 
 export default function Login() {
   const router = useRouter();

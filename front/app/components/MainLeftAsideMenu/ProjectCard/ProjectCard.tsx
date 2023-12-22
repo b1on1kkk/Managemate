@@ -3,7 +3,7 @@
 import { MoreVertical } from "lucide-react";
 import { icons } from "lucide-react";
 
-import { Project } from "@/app/redux/features/projects.slice";
+import type { Project } from "@/app/redux/interfaces/projects_interfaces";
 
 export default function ProjectCard({ project }: { project: Project }) {
   const Icon = icons[project.icon_name as keyof typeof icons];

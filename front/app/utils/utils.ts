@@ -1,7 +1,7 @@
-import type { Member } from "../redux/features/get_members.slice";
-import axios from "axios";
-
-import type { parsedTodos, TBoard } from "../redux/features/get_tasks.slice";
+import type { parsedTodos, TBoard } from "../redux/interfaces/tasks_interfaces";
+import type { Member } from "../redux/interfaces/member_interfaces";
+import type { Users } from "../redux/interfaces/users_interfaces";
+import type { Project } from "../redux/interfaces/projects_interfaces";
 
 export function DevideIntoGroups(members: Member[]): [Member[], number] {
   const newArray: Member[] = [];
@@ -58,4 +58,19 @@ export function DoneProjectsCounter(tasks: TBoard[]) {
   });
 
   return ((final_done * 100) / all_items).toFixed(0);
+}
+
+export function FindProjectTitleById(
+  project_id: number | null,
+  projects: Project[]
+): [string, string] | [] {
+  for (let i = 0; i < projects.length; i++) {
+    if (projects[i].id === project_id)
+      return [projects[i].title, projects[i].icon_name];
+  }
+  return [];
+}
+
+export function FindUser(members: Member[], user_inf: Users) {
+  return members.find((member) => member.id === user_inf.id);
 }

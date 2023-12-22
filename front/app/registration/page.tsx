@@ -1,15 +1,15 @@
 "use client";
 
-import { v4 as uuidv4 } from "uuid";
-
 import axios from "axios";
 import { useState } from "react";
+import { useRouter } from "next/navigation";
+import { v4 as uuidv4 } from "uuid";
 
+// redux
 import { useDispatch } from "react-redux";
 import { AppDispatch } from "../redux/store";
 import { getUser } from "../redux/features/user.slice";
-
-import { useRouter } from "next/navigation";
+//
 
 export default function Registration() {
   const router = useRouter();

@@ -1,6 +1,4 @@
-import React from "react";
-
-import type { Member } from "@/app/redux/features/get_members.slice";
+import type { Member } from "@/app/redux/interfaces/member_interfaces";
 
 import MemberCard from "../MemberCard/MemberCard";
 

@@ -2,8 +2,10 @@
 
 import Header from "../Header/Header";
 
+// redux
 import { useSelector } from "react-redux";
 import { RootState } from "@/app/redux/store";
+//
 
 export default function Main({ children }: { children: React.ReactNode }) {
   const status = useSelector((state: RootState) => state.service.status);

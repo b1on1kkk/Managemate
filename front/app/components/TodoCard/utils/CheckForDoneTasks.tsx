@@ -1,4 +1,4 @@
-import { TTodoCard } from "@/app/redux/features/get_tasks.slice";
+import type { TTodoCard } from "@/app/redux/interfaces/tasks_interfaces";
 
 export function CheckForDoneTasks(
   todoCard: TTodoCard

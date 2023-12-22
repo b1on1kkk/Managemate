@@ -1,14 +1,16 @@
 "use client";
 
-import Icon from "../Icon/Icon";
-
+import { useEffect, useState } from "react";
 import Link from "next/link";
+import axios from "axios";
 
+// redux
 import { useSelector, useDispatch } from "react-redux";
 import { RootState, AppDispatch } from "@/app/redux/store";
 import { getUser } from "@/app/redux/features/user.slice";
-import { useEffect, useState } from "react";
-import axios from "axios";
+//
+
+import Icon from "../Icon/Icon";
 
 export default function Header() {
   axios.defaults.withCredentials = true;

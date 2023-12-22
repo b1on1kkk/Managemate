@@ -15,7 +15,8 @@ import { setStatus } from "@/app/redux/features/service.slice";
 
 // utils
 import { DevideIntoGroups } from "@/app/utils/utils";
-import type { Member } from "@/app/redux/features/get_members.slice";
+import type { Member } from "@/app/redux/interfaces/member_interfaces";
+import { FindProjectTitleById } from "@/app/utils/utils";
 //
 
 export default function ProjectHeader({ status }: { status: boolean }) {
@@ -24,6 +25,18 @@ export default function ProjectHeader({ status }: { status: boolean }) {
 
   const dispatch = useDispatch<AppDispatch>();
   const members = useSelector((state: RootState) => state.members.members);
+
+  const project_id = useSelector(
+    (state: RootState) => state.service.project?.chosen_project
+  );
+  const projects = useSelector(
+    (state: RootState) => state.project_reducer.projects
+  );
+
+  const [projectTitle, projectIcon] = FindProjectTitleById(
+    project_id,
+    projects
+  );
 
   useEffect(() => {
     if (members && members.length > 0) {
@@ -36,7 +49,7 @@ export default function ProjectHeader({ status }: { status: boolean }) {
   return (
     <header className="bg-white">
       <div className="px-7 py-7 flex">
-        <PersantagePanel title={"Insert here title of the project"} />
+        <PersantagePanel title={projectTitle} project_icon={projectIcon} />
         <div className="flex items-center gap-7">
           <MemberAvatars
             members={members}

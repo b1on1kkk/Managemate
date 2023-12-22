@@ -10,7 +10,8 @@ import TodoSortingHeader from "@/app/components/TodoSortingHeader/TodoSortingHea
 // redux
 import { useSelector, useDispatch } from "react-redux";
 import { RootState, AppDispatch } from "@/app/redux/store";
-import { TBoard, TTodoCard } from "@/app/redux/features/get_tasks.slice";
+import type { TBoard } from "@/app/redux/interfaces/tasks_interfaces";
+import type { TTodoCard } from "@/app/redux/interfaces/tasks_interfaces";
 import {
   dropCardHandler,
   getTasks

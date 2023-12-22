@@ -18,11 +18,11 @@ import { getProjects } from "@/app/redux/features/projects.slice";
 import { setProject } from "@/app/redux/features/service.slice";
 //
 
-import type { User } from "@/app/redux/features/user.slice";
+import type { Users } from "@/app/redux/interfaces/users_interfaces";
 
 export default function MainLeftAsideMenu() {
   const [isMounted, setIsMounted] = useState(true);
-  const [userState, setUserState] = useState<User[]>([]);
+  const [userState, setUserState] = useState<Users[]>([]);
 
   const dispatch = useDispatch<AppDispatch>();
 

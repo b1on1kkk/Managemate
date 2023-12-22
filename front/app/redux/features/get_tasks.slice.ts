@@ -2,49 +2,14 @@ import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import axios, { AxiosError } from "axios";
 import { TASKS_TEMPLATE } from "@/constants/TasksTemplate";
 
-export interface TTodo {
-  id: number;
-  checked: boolean;
-  text: string;
-}
+import { TaskExist, GetTodoItemsByBoardId } from "../utils/redux_utils";
 
-export interface TTodoCard {
-  id: number;
-  sub_title: string;
-  title: string;
-  about: string;
-  htag_color: string;
-  show_more: boolean;
-  todos: TTodo[];
-}
-
-export interface TBoard {
-  id: number;
-  title: string;
-  open_add_modal: boolean;
-  items: TTodoCard[];
-}
-
-interface TaskDetailedInf {
-  tasks: TBoard[];
-  error: AxiosError | null | unknown;
-  pending: string;
-}
-
-//
-export interface parsedTodos {
-  todo_inf: {
-    id: number;
-    sub_title: string;
-    title: string;
-    about: string;
-    htag_color: string;
-    show_more: boolean;
-    todos: TTodo[];
-  };
-  board_id: number;
-}
-//
+import type {
+  TTodoCard,
+  TBoard,
+  TaskDetailedInf,
+  parsedTodos
+} from "../interfaces/tasks_interfaces";
 
 export const getTasks = createAsyncThunk(
   "tasks/getTasks",
@@ -207,29 +172,8 @@ export const Tasks = createSlice({
   }
 });
 
-/////////////////////////////////////////THINK ABOUT OPT////////////////////////////////////
-
-function TaskExist(board_id: number, parsedTasks: parsedTodos[]) {
-  for (let i = 0; i < parsedTasks.length; i++) {
-    if (parsedTasks[i].board_id === board_id) return true;
-  }
-  return false;
-}
-
-function GetTodoItemsByBoardId(board_id: number, parsedTasks: parsedTodos[]) {
-  const buff: TTodoCard[] = [];
-  for (let i = 0; i < parsedTasks.length; i++) {
-    if (parsedTasks[i].board_id === board_id)
-      buff.push(parsedTasks[i].todo_inf);
-  }
-  return buff;
-}
-
-/////////////////////////////////////////THINK ABOUT OPT////////////////////////////////////
-
 export const {
   addingNewTaskStatus,
-  // addingNewTask,
   newTasks,
   showMoreTaskCard,
   setTodoDone,

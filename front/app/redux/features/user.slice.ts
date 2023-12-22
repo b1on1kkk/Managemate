@@ -1,14 +1,10 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import axios, { AxiosError } from "axios";
 
-export interface User {
-  id: number;
-  name: string;
-  mail: string;
-}
+import type { TUser } from "../interfaces/user_interfaces";
 
 interface Projects {
-  user: User[] | null;
+  user: TUser[] | null;
   error: AxiosError | null | unknown;
 }
 

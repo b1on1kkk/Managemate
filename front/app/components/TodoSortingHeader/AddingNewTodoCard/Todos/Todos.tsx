@@ -1,6 +1,6 @@
 import { BadgeCheck, Trash } from "lucide-react";
 
-import { TTodo } from "@/app/redux/features/get_tasks.slice";
+import type { TTodo } from "@/app/redux/interfaces/tasks_interfaces";
 
 export default function Todos({
   todo,

@@ -22,7 +22,7 @@ import {
 // utils
 import { TODO_CARD_FOOTER_ICONS } from "@/constants/TodoCardFooterIcons";
 import { CheckForDoneTasks } from "./utils/CheckForDoneTasks";
-import type { TTodoCard } from "@/app/redux/features/get_tasks.slice";
+import type { TTodoCard } from "@/app/redux/interfaces/tasks_interfaces";
 import { UpdateTasksState } from "@/app/utils/utils";
 //
 

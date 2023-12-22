@@ -1,5 +1,3 @@
-import React from "react";
-
 export default function Input({
   maxInputLength,
   styles,
@@ -15,8 +13,6 @@ export default function Input({
   placeholder: string;
   onBlur?: (e: React.FocusEvent<HTMLInputElement>) => void;
 }) {
-  //   console.log(maxInputLength);
-
   return (
     <input
       type="text"

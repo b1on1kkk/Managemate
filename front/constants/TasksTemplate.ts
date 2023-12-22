@@ -1,11 +1,13 @@
-import { TTodoCard } from "@/app/redux/features/get_tasks.slice";
+import type { TTodoCard } from "@/app/redux/interfaces/tasks_interfaces";
 
-export const TASKS_TEMPLATE: {
+interface TASKS_TEMPLATE_INTERFACE {
   id: number;
   title: string;
   open_add_modal: boolean;
   items: TTodoCard[];
-}[] = [
+}
+
+export const TASKS_TEMPLATE: TASKS_TEMPLATE_INTERFACE[] = [
   {
     id: 1,
     title: "To Do",

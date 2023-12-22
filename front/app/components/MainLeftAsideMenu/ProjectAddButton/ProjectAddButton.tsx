@@ -1,14 +1,14 @@
 "use client";
 
-import { Plus } from "lucide-react";
 import { useState } from "react";
-
 import axios from "axios";
+import { Plus } from "lucide-react";
 
+// redux
 import { useSelector, useDispatch } from "react-redux";
 import { AppDispatch, RootState } from "@/app/redux/store";
-
 import { getProjects } from "@/app/redux/features/projects.slice";
+//
 
 export default function ProjectAddButton() {
   const [newProject, setNewProject] = useState<boolean>(false);

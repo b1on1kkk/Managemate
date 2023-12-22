@@ -1,17 +1,7 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import axios, { AxiosError } from "axios";
 
-export interface Member {
-  id: number;
-  name: string;
-  mail: string;
-}
-
-interface MemberDetailedInf {
-  members: Member[] | null;
-  error: AxiosError | null | unknown;
-  pending: string;
-}
+import type { MemberDetailedInf } from "../interfaces/member_interfaces";
 
 export const getMembers = createAsyncThunk(
   "member/getMembers",

@@ -1,9 +1,9 @@
 import "./globals.css";
 
+import ReduxProvider from "./redux/provider";
+
 import LeftsideNavbar from "./components/LeftsideNavbar/LeftsideNavbar";
 import Main from "./components/Main/Main";
-
-import ReduxProvider from "./redux/provider";
 
 export default function RootLayout({
   children

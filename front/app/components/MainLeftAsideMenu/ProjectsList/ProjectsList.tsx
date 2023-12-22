@@ -3,7 +3,7 @@
 import Link from "next/link";
 import ProjectCard from "../ProjectCard/ProjectCard";
 
-import type { Project } from "@/app/redux/features/projects.slice";
+import type { Project } from "@/app/redux/interfaces/projects_interfaces";
 
 interface TProjectsList {
   projects: Project[];

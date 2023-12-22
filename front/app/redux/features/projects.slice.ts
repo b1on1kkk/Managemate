@@ -1,23 +1,7 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import axios, { AxiosError } from "axios";
 
-export interface Project {
-  id: number;
-  user_id: number;
-  title: string;
-  icon_name: string;
-  overview: string;
-  tasks: string;
-  notes: string;
-  questions: string;
-  role: number;
-}
-
-interface Projects {
-  projects: Project[];
-  error: AxiosError | null;
-  pending: string;
-}
+import type { TProjects } from "../interfaces/projects_interfaces";
 
 export const getProjects = createAsyncThunk(
   "projects/getProjects",
@@ -34,7 +18,7 @@ export const getProjects = createAsyncThunk(
   }
 );
 
-const initialState: Projects = {
+const initialState: TProjects = {
   projects: [],
   error: null,
   pending: "pending"

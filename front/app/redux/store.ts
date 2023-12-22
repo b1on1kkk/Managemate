@@ -4,9 +4,7 @@ import { Projects } from "./features/projects.slice";
 import { User } from "./features/user.slice";
 import { Users } from "./features/get_all_users.slice";
 import { Service } from "./features/service.slice";
-
 import { Members } from "./features/get_members.slice";
-
 import { Tasks } from "./features/get_tasks.slice";
 
 export const store = configureStore({

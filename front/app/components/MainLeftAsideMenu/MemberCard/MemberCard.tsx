@@ -6,7 +6,7 @@ import { useState } from "react";
 import styles from "./MemberCard.module.scss";
 
 // redux
-import { Member } from "@/app/redux/features/get_members.slice";
+import { Member } from "@/app/redux/interfaces/member_interfaces";
 import { useSelector, useDispatch } from "react-redux";
 import { RootState, AppDispatch } from "@/app/redux/store";
 import { getMembers } from "@/app/redux/features/get_members.slice";

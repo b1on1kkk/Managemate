@@ -1,4 +1,4 @@
-import { TBoard } from "@/app/redux/features/get_tasks.slice";
+import type { TBoard } from "@/app/redux/interfaces/tasks_interfaces";
 
 export function TodoCardsCounter(tasks: TBoard[]) {
   let idx = 0;
