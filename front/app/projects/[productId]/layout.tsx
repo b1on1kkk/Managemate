@@ -27,10 +27,12 @@ export default function RootLayout({
   const project_id = useSelector((state: RootState) => state.service.project);
 
   useEffect(() => {
-    dispatch(getMembers(project_id.chosen_project!));
-    setChoosenIdProject(project_id.chosen_project);
-    dispatch(getTasks(project_id.chosen_project!));
-  }, []);
+    if (project_id) {
+      dispatch(getMembers(project_id.chosen_project!));
+      setChoosenIdProject(project_id.chosen_project);
+      dispatch(getTasks(project_id.chosen_project!));
+    }
+  }, [project_id?.chosen_project]);
 
   return (
     <main className="flex-1 flex flex-col">

@@ -4,6 +4,7 @@ export interface Member {
   id: number;
   name: string;
   mail: string;
+  avatar: string;
 }
 
 export interface MemberDetailedInf {

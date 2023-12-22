@@ -2,6 +2,7 @@ import axios from "axios";
 
 import { X } from "lucide-react";
 import { useEffect, useState } from "react";
+import Image from "next/image";
 
 // redux
 import { useDispatch, useSelector } from "react-redux";
@@ -63,7 +64,15 @@ export default function NewMemberModal({
                       key={idx}
                       className="text-black flex items-center mb-3 gap-3 p-2 hover:bg-gray-200 transition-all duration-200 ease-in rounded-lg"
                     >
-                      <div className="w-10 h-10 bg-gray-400 rounded-full" />
+                      <div className="w-10 h-10 rounded-full bg-indigo-500 flex items-center justify-center">
+                        <Image
+                          src={user_inf.avatar}
+                          alt="user_avatar"
+                          width={32}
+                          height={32}
+                          className="mb-1"
+                        />
+                      </div>
                       <div className="flex flex-col flex-1 truncate">
                         <span>{user_inf.name}</span>
                         <span className="text-sm text-gray-400">

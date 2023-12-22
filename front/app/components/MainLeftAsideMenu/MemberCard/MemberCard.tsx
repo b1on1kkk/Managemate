@@ -14,6 +14,8 @@ import { getMembers } from "@/app/redux/features/get_members.slice";
 
 import { ChevronDown, Phone, AtSign } from "lucide-react";
 
+import Image from "next/image";
+
 interface TMemberCard {
   member: Member;
   user_id: number | null;
@@ -51,7 +53,15 @@ export default function MemberCard({
       }`}
     >
       <div className="flex gap-2 w-full">
-        <div className="h-10 w-10 bg-gray-400 rounded-full"></div>
+        <div className="w-10 h-10 rounded-full flex justify-center items-center bg-indigo-500">
+          <Image
+            src={member.avatar}
+            alt="member_avatar"
+            width={32}
+            height={32}
+            className="mb-1"
+          />
+        </div>
         <div className="flex flex-col flex-1">
           {user_id === member.id ? (
             <span>

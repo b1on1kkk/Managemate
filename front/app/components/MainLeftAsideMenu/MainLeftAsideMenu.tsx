@@ -41,6 +41,8 @@ export default function MainLeftAsideMenu() {
     (state: RootState) => state.service.project
   );
 
+  console.log(members);
+
   const user = useSelector((state: RootState) => state.user.user);
 
   useEffect(() => {

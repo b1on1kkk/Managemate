@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import Link from "next/link";
 import axios from "axios";
+import Icon from "../Icon/Icon";
 
 // redux
 import { useSelector, useDispatch } from "react-redux";
@@ -10,7 +11,7 @@ import { RootState, AppDispatch } from "@/app/redux/store";
 import { getUser } from "@/app/redux/features/user.slice";
 //
 
-import Icon from "../Icon/Icon";
+import Image from "next/image";
 
 export default function Header() {
   axios.defaults.withCredentials = true;
@@ -52,8 +53,16 @@ export default function Header() {
             </div>
           </div>
 
-          <div className="flex items-center gap-2">
-            <div className="w-10 h-10 bg-gray-400 rounded-full"></div>
+          <div className="flex items-center gap-2 justify-center">
+            <div className="w-10 h-10 rounded-full flex justify-center items-center bg-indigo-500">
+              <Image
+                src={user![0].avatar}
+                alt="user_avatar"
+                width={32}
+                height={32}
+                className="mb-1"
+              />
+            </div>
             <div>{user[0].name}</div>
           </div>
         </>

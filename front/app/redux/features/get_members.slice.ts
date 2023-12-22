@@ -10,7 +10,6 @@ export const getMembers = createAsyncThunk(
       const res = await axios.get(
         `http://localhost:2000/members?user_id=${user_id}`
       );
-
       return res;
     } catch (error) {
       const axios_error = error as AxiosError;
@@ -28,7 +27,11 @@ const initialState: MemberDetailedInf = {
 export const Members = createSlice({
   name: "Members",
   initialState,
-  reducers: {},
+  reducers: {
+    deletePrevMembers: (state, _) => {
+      return { ...state, members: null };
+    }
+  },
   extraReducers: (builder) => {
     builder
       .addCase(getMembers.fulfilled, (state, action) => {
@@ -45,4 +48,5 @@ export const Members = createSlice({
   }
 });
 
+export const { deletePrevMembers } = Members.actions;
 export default Members.reducer;

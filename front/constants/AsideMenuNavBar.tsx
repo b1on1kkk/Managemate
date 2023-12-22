@@ -19,41 +19,41 @@ export const ASIDE_MENU_NAVBAR: T_ASIDE_MENU_NAVBAR[] = [
   {
     path: "/",
     name: "Dashboard",
-    icon: <LayoutDashboard color="black" />
+    icon: <LayoutDashboard />
   },
   {
     path: "/projects",
     name: "Projects",
-    icon: <Waypoints color="black" />
+    icon: <Waypoints />
   },
   {
     path: "/timer",
     name: "Timer",
-    icon: <Timer color="black" />
+    icon: <Timer />
   },
   {
     path: "/calendar",
     name: "Calendar",
-    icon: <CalendarDays color="black" />
+    icon: <CalendarDays />
   },
   {
     path: "/statistics",
     name: "Statistics",
-    icon: <LineChart color="black" />
+    icon: <LineChart />
   },
   {
     path: "/chat",
     name: "Chat",
-    icon: <MessageSquare color="black" />
+    icon: <MessageSquare />
   },
   {
     path: "/help",
     name: "Help",
-    icon: <HelpCircle color="black" />
+    icon: <HelpCircle />
   },
   {
     path: "/log_out",
     name: "Log out",
-    icon: <LogOut color="black" />
+    icon: <LogOut />
   }
 ];

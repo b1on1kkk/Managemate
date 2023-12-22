@@ -74,3 +74,7 @@ export function FindProjectTitleById(
 export function FindUser(members: Member[], user_inf: Users) {
   return members.find((member) => member.id === user_inf.id);
 }
+
+export function getRandomNumber(min: number, max: number): number {
+  return Math.floor(Math.random() * (max - min + 1)) + min;
+}

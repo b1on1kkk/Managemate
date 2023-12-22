@@ -1,4 +1,5 @@
 import express, { Express, Request, Response } from "express";
+import path from "path";
 
 const mysql = require("mysql");
 const session = require("express-session");
@@ -110,7 +111,7 @@ app.post("/logout", (req: Request, res: Response) => {
 
 app.get("/user", (req: Request, res: Response) => {
   db.query(
-    "SELECT id, name, mail FROM users WHERE hash_key = ?",
+    "SELECT id, name, mail, avatar FROM users WHERE hash_key = ?",
     [req.session?.user_key],
     (error: Error, result: any) => {
       if (error) return res.status(500).send(error);
@@ -120,10 +121,13 @@ app.get("/user", (req: Request, res: Response) => {
 });
 
 app.get("/users", (_, res: Response) => {
-  db.query("SELECT id, name, mail FROM users", (error: Error, result: any) => {
-    if (error) return res.status(500).send(error);
-    return res.status(200).json(result);
-  });
+  db.query(
+    "SELECT id, name, mail, avatar FROM users",
+    (error: Error, result: any) => {
+      if (error) return res.status(500).send(error);
+      return res.status(200).json(result);
+    }
+  );
 });
 
 app.get("/projects", (req: Request, res: Response) => {
@@ -146,7 +150,7 @@ app.get("/members", (req: Request, res: Response) => {
 
   // getting all users that connects to project.
   db.query(
-    "SELECT id, name, mail FROM users JOIN users_projects ON users.id = users_projects.user_id WHERE users_projects.project_id = ?",
+    "SELECT id, name, mail, avatar FROM users JOIN users_projects ON users.id = users_projects.user_id WHERE users_projects.project_id = ?",
     [user_id],
     (error: Error, projects: any) => {
       if (error) return console.log(error);
@@ -242,6 +246,38 @@ app.get("/tasks", (req: Request, res: Response) => {
       return res.status(200).json(projects);
     }
   );
+});
+
+app.post("/delete_project", (req: Request, res: Response) => {
+  const { project_id } = req.body;
+
+  db.query(
+    `DELETE FROM users_projects WHERE project_id = ?`,
+    [project_id],
+    (error: Error) => {
+      if (error) return res.status(500).send(error);
+
+      db.query(
+        `DELETE FROM projects WHERE id = ?`,
+        [project_id],
+        (error: Error) => {
+          if (error) return res.status(500).send(error);
+
+          return res.status(200).send("Deleted successfully!");
+        }
+      );
+    }
+  );
+});
+
+app.get("/avatars", (req: Request, res: Response) => {
+  const { avatar_name } = req.query;
+
+  try {
+    res.sendFile(path.join(__dirname, "avatars", `${avatar_name}`));
+  } catch (error) {
+    res.send(error);
+  }
 });
 
 // check if user is logged in and has a session
