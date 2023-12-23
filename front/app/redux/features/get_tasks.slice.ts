@@ -49,12 +49,6 @@ export const Tasks = createSlice({
         })
       };
     },
-    newTasks: (state, action) => {
-      return {
-        ...state,
-        tasks: action.payload
-      };
-    },
     showMoreTaskCard: (state, action) => {
       const { task_id, board_id, status } = action.payload;
 
@@ -67,33 +61,6 @@ export const Tasks = createSlice({
               items: board.items.map((task) => {
                 if (task.id === task_id) return { ...task, show_more: status };
 
-                return task;
-              })
-            };
-          }
-          return board;
-        })
-      };
-    },
-    setTodoDone: (state, action) => {
-      const { task_id, board_id, todo_id, status } = action.payload;
-
-      return {
-        ...state,
-        tasks: state.tasks.map((board) => {
-          if (board.id === board_id) {
-            return {
-              ...board,
-              items: board.items.map((task) => {
-                if (task.id === task_id)
-                  return {
-                    ...task,
-                    todos: task.todos.map((todo) => {
-                      if (todo.id === todo_id)
-                        return { ...todo, checked: status };
-                      return todo;
-                    })
-                  };
                 return task;
               })
             };
@@ -138,9 +105,10 @@ export const Tasks = createSlice({
   extraReducers: (builder) => {
     builder
       .addCase(getTasks.fulfilled, (state, action) => {
-        state.tasks = TASKS_TEMPLATE;
+        // console.log(TASKS_TEMPLATE);
 
-        // костыли
+        state.tasks = [...TASKS_TEMPLATE];
+
         if (action.payload.data[0]?.tasks) {
           const tasks: parsedTodos[] = JSON.parse(
             action.payload.data[0]?.tasks
@@ -161,7 +129,6 @@ export const Tasks = createSlice({
           state.error = null;
           state.pending = action.meta.requestStatus;
         }
-        //
       })
       .addCase(getTasks.pending, (state, action) => {
         state.pending = action.meta.requestStatus;
@@ -172,11 +139,6 @@ export const Tasks = createSlice({
   }
 });
 
-export const {
-  addingNewTaskStatus,
-  newTasks,
-  showMoreTaskCard,
-  setTodoDone,
-  dropCardHandler
-} = Tasks.actions;
+export const { addingNewTaskStatus, showMoreTaskCard, dropCardHandler } =
+  Tasks.actions;
 export default Tasks.reducer;

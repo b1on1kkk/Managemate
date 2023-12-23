@@ -32,7 +32,7 @@ export default function RootLayout({
       setChoosenIdProject(project_id.chosen_project);
       dispatch(getTasks(project_id.chosen_project!));
     }
-  }, [project_id?.chosen_project]);
+  }, []);
 
   return (
     <main className="flex-1 flex flex-col">

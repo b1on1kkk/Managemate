@@ -36,8 +36,6 @@ export default function Tasks() {
     e.preventDefault();
   }
 
-  function DragLeaveHandler(e: React.DragEvent<HTMLDivElement>) {}
-
   function DragStartHandler(
     e: React.DragEvent<HTMLDivElement>,
     board: TBoard,
@@ -46,8 +44,6 @@ export default function Tasks() {
     setCurrentBoard(board);
     setCurrentItem(item);
   }
-
-  function DragEndHandler(e: React.DragEvent<HTMLDivElement>) {}
 
   async function DropCardHandler(
     e: React.DragEvent<HTMLDivElement>,
@@ -61,6 +57,10 @@ export default function Tasks() {
           currentItem: currentItem,
           currentBoard: currentBoard
         })
+      );
+
+      console.log(
+        JSON.parse(UpdateTasksState(board.id, tasks, currentItem.id))
       );
 
       await axios.post("http://localhost:2000/update_tasks", {
@@ -90,9 +90,7 @@ export default function Tasks() {
                     key={todo_idx}
                     draggable={true}
                     onDragOver={(e) => DragOverHandler(e)}
-                    onDragLeave={(e) => DragLeaveHandler(e)}
                     onDragStart={(e) => DragStartHandler(e, board, todo)}
-                    onDragEnd={(e) => DragEndHandler(e)}
                   >
                     <TodoCard todoCard={todo} board_id={board.id} />
                   </div>

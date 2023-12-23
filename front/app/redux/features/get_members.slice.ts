@@ -5,10 +5,10 @@ import type { MemberDetailedInf } from "../interfaces/member_interfaces";
 
 export const getMembers = createAsyncThunk(
   "member/getMembers",
-  async (user_id: number, thunkAPI) => {
+  async (project_id: number, thunkAPI) => {
     try {
       const res = await axios.get(
-        `http://localhost:2000/members?user_id=${user_id}`
+        `http://localhost:2000/members?project_id=${project_id}`
       );
       return res;
     } catch (error) {

@@ -1,5 +1,6 @@
 import express, { Express, Request, Response } from "express";
 import path from "path";
+import { User } from "./interfaces/interfaces";
 
 const mysql = require("mysql");
 const session = require("express-session");
@@ -19,17 +20,6 @@ const db = mysql.createConnection({
 });
 //
 
-app.use(express.json());
-app.use(
-  cors({
-    origin: ["http://localhost:3000"],
-    methods: ["GET", "POST"],
-    credentials: true
-  })
-);
-app.use(cookieParser());
-app.use(bodyParser.urlencoded({ extended: true }));
-
 const sessionStore = new MySQLStore(
   {
     expiration: 10800000,
@@ -46,6 +36,17 @@ const sessionStore = new MySQLStore(
   db
 );
 
+// middleware
+app.use(express.json());
+app.use(
+  cors({
+    origin: ["http://localhost:3000"],
+    methods: ["GET", "POST"],
+    credentials: true
+  })
+);
+app.use(cookieParser());
+app.use(bodyParser.urlencoded({ extended: true }));
 app.use(
   session({
     key: "user_id",
@@ -58,15 +59,7 @@ app.use(
     }
   })
 );
-
-interface User {
-  id: number;
-  project_id: number;
-  name: string;
-  mail: string;
-  hash_key: string;
-  password: string;
-}
+//
 
 app.post("/login", (req: Request, res: Response) => {
   // gettings name and password from frontend
@@ -146,12 +139,12 @@ app.get("/projects", (req: Request, res: Response) => {
 });
 
 app.get("/members", (req: Request, res: Response) => {
-  const { user_id } = req.query;
+  const { project_id } = req.query;
 
   // getting all users that connects to project.
   db.query(
     "SELECT id, name, mail, avatar FROM users JOIN users_projects ON users.id = users_projects.user_id WHERE users_projects.project_id = ?",
-    [user_id],
+    [project_id],
     (error: Error, projects: any) => {
       if (error) return console.log(error);
 

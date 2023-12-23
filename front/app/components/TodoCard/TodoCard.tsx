@@ -1,7 +1,5 @@
 "use client";
 
-import { useEffect } from "react";
-import axios from "axios";
 import styles from "./TodoCard.module.scss";
 
 // components
@@ -14,7 +12,6 @@ import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "@/app/redux/store";
 import {
   showMoreTaskCard,
-  setTodoDone,
   getTasks
 } from "@/app/redux/features/get_tasks.slice";
 //
@@ -23,7 +20,8 @@ import {
 import { TODO_CARD_FOOTER_ICONS } from "@/constants/TodoCardFooterIcons";
 import { CheckForDoneTasks } from "./utils/CheckForDoneTasks";
 import type { TTodoCard } from "@/app/redux/interfaces/tasks_interfaces";
-import { UpdateTasksState } from "@/app/utils/utils";
+import { RemoveTask } from "./utils/RemoveTask";
+import { CheckDoneTask } from "./utils/CheckDoneTask";
 //
 
 export default function TodoCard({
@@ -40,29 +38,6 @@ export default function TodoCard({
   );
   const fakeArray = new Array(4).fill(0);
   const [totalLength, doneCounter] = CheckForDoneTasks(todoCard);
-
-  useEffect(() => {
-    axios.post("http://localhost:2000/update_tasks", {
-      todo: UpdateTasksState(board_id, tasks, todoCard.id),
-      project_id: current_project_id
-    });
-  }, [tasks, current_project_id, board_id, todoCard.id]);
-
-  async function RemoveTask(todoCardId: number) {
-    const filteredArray = tasks.map((task) => {
-      return {
-        ...task,
-        items: task.items.filter((todo) => todo.id !== todoCardId)
-      };
-    });
-
-    await axios.post("http://localhost:2000/update_tasks", {
-      todo: UpdateTasksState(board_id, filteredArray, todoCard.id),
-      project_id: current_project_id
-    });
-
-    dispatch(getTasks(current_project_id!));
-  }
 
   return (
     <div
@@ -86,7 +61,15 @@ export default function TodoCard({
           </div>
           <button
             className="opacity-50 hover:opacity-100 transition-all duration-200 ease-in border-2 border-white hover:border-red-500 rounded-lg p-1"
-            onClick={() => RemoveTask(todoCard.id)}
+            onClick={() => {
+              if (current_project_id) {
+                RemoveTask(todoCard.id, tasks, board_id, current_project_id);
+
+                setTimeout(() => {
+                  dispatch(getTasks(current_project_id!));
+                }, 400);
+              }
+            }}
           >
             <Trash width={20} height={20} color="red" />
           </button>
@@ -152,16 +135,22 @@ export default function TodoCard({
               return (
                 <Todos
                   todo={todo}
-                  checkedCB={(id, status) =>
-                    dispatch(
-                      setTodoDone({
-                        task_id: todoCard.id,
-                        board_id: board_id,
-                        todo_id: id,
-                        status: status
-                      })
-                    )
-                  }
+                  checkedCB={(id, status) => {
+                    if (current_project_id) {
+                      CheckDoneTask(
+                        id,
+                        status,
+                        todoCard.id,
+                        board_id,
+                        tasks,
+                        current_project_id
+                      );
+
+                      setTimeout(() => {
+                        dispatch(getTasks(current_project_id!));
+                      }, 400);
+                    }
+                  }}
                   key={idx}
                   in_task={true}
                 />
