@@ -11,9 +11,10 @@ import { AppDispatch } from "../redux/store";
 import { getUser } from "../redux/features/user.slice";
 //
 
-import { AVATAR_FILES_NAMES } from "@/constants/AvatarFilesNames";
-
+// utils
 import { getRandomNumber } from "../utils/utils";
+import { AVATAR_LINKS } from "@/constants/AvatarFilesNames";
+//
 
 export default function Registration() {
   const router = useRouter();
@@ -33,9 +34,7 @@ export default function Registration() {
         password: password,
         mail: email,
         hash_key: uuidv4(),
-        avatar: `http://localhost:2000/avatars?avatar_name=${
-          AVATAR_FILES_NAMES[getRandomNumber(0, AVATAR_FILES_NAMES.length - 1)]
-        }`
+        avatar: AVATAR_LINKS[getRandomNumber(0, AVATAR_LINKS.length - 1)]
       });
     } catch (error) {
       console.log(error);

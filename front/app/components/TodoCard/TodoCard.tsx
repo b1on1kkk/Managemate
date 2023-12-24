@@ -22,6 +22,9 @@ import { CheckForDoneTasks } from "./utils/CheckForDoneTasks";
 import type { TTodoCard } from "@/app/redux/interfaces/tasks_interfaces";
 import { RemoveTask } from "./utils/RemoveTask";
 import { CheckDoneTask } from "./utils/CheckDoneTask";
+import { AVATAR_LINKS } from "@/constants/AvatarFilesNames";
+import { getRandomNumber } from "@/app/utils/utils";
+import Image from "next/image";
 //
 
 export default function TodoCard({
@@ -36,7 +39,7 @@ export default function TodoCard({
   const current_project_id = useSelector(
     (state: RootState) => state.service.project?.chosen_project
   );
-  const fakeArray = new Array(4).fill(0);
+  const fakeArray = new Array(3).fill(0);
   const [totalLength, doneCounter] = CheckForDoneTasks(todoCard);
 
   return (
@@ -166,11 +169,24 @@ export default function TodoCard({
           {fakeArray.map((_, idx) => {
             return (
               <div
-                className="w-8 h-8 bg-gray-400 rounded-full border-1 border-white"
+                className="w-8 h-8 bg-indigo-500 rounded-full border-1 border-white flex justify-center items-center"
                 key={idx}
-              />
+              >
+                <Image
+                  src={
+                    AVATAR_LINKS[getRandomNumber(0, AVATAR_LINKS.length - 1)]
+                  }
+                  alt="user_avatar"
+                  width={25}
+                  height={25}
+                  className="mb-1"
+                />
+              </div>
             );
           })}
+          <div className="w-8 h-8 bg-indigo-100 rounded-full border-1 border-indigo-500 text-sm font-semibold text-indigo-500 flex justify-center items-center">
+            <span className="mb-0.5">+2</span>
+          </div>
         </div>
 
         <div className="flex text-base text-gray-400 gap-3">

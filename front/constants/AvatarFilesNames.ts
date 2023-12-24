@@ -1,1 +1,5 @@
-export const AVATAR_FILES_NAMES = ["first.png", "second.png", "third.png"];
+export const AVATAR_LINKS = [
+  "http://localhost:2000/avatars?avatar_name=first.png",
+  "http://localhost:2000/avatars?avatar_name=second.png",
+  "http://localhost:2000/avatars?avatar_name=third.png"
+];

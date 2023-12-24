@@ -1,40 +1,16 @@
 import express, { Express, Request, Response } from "express";
 import path from "path";
+
+import { db, sessionStore } from "./db/db";
+
 import { User } from "./interfaces/interfaces";
 
-const mysql = require("mysql");
 const session = require("express-session");
-const MySQLStore = require("express-mysql-session")(session);
 const bodyParser = require("body-parser");
 const cors = require("cors");
 const cookieParser = require("cookie-parser");
 
 const app: Express = express();
-
-// database connection
-const db = mysql.createConnection({
-  host: "localhost",
-  user: "root",
-  password: "",
-  database: "managemate"
-});
-//
-
-const sessionStore = new MySQLStore(
-  {
-    expiration: 10800000,
-    createDatabaseTable: true,
-    schema: {
-      tableName: "sessiontbl",
-      columnNames: {
-        session_id: "session_id",
-        expires: "expires",
-        data: "data"
-      }
-    }
-  },
-  db
-);
 
 // middleware
 app.use(express.json());
